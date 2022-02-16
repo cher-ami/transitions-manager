@@ -1,0 +1,29 @@
+{
+  "name": "view-mananger",
+  "version": "1.0.0",
+  "description": "Control views",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview"
+  },
+  "author": "cher-ami",
+  "license": "MIT",
+  "dependencies": {
+    "@solid-js/signal": "^1.0.2",
+    "@wbe/debug": "^1.0.0",
+    "@wbe/deferred-promise": "^2.4.0"
+  },
+  "peerDependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  },
+  "devDependencies": {
+    "gsap": "^3.9.1",
+    "@types/node": "^16.11.6",
+    "@types/react": "^17.0.34",
+    "@types/react-dom": "^17.0.11",
+    "@vitejs/plugin-react": "^1.0.7",
+    "typescript": "^4.4.4"
+  }
+}
