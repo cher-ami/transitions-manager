@@ -1,3 +1,3 @@
-export { ViewManager } from "./ViewManager"
-export type { TPlayState, TMountState } from "./ViewManager"
-export { useIsMount, usePlayIn, usePlayOut, useViewManager } from "./viewManagerHooks"
+export { TransitionsManager } from "./TransitionsManager"
+export type { TPlayState, TMountState } from "./TransitionsManager"
+export { useIsMount, usePlayIn, usePlayOut, useTransitionsManager } from "./transitionsManagerHooks"

@@ -2,7 +2,7 @@ import { StateSignal } from "@solid-js/signal"
 import debug from "@wbe/debug"
 import { deferredPromise, TDeferredPromise } from "@wbe/deferred-promise"
 
-const componentName = "ViewManager"
+const componentName = "TransitionsManager"
 const log = debug(`front:${componentName}`)
 
 export type TPlayState = "hidden" | "play-out" | "play-in" | "visible"
@@ -14,7 +14,7 @@ type TContructor = {
   showLog?: boolean
 }
 
-export class ViewManager {
+export class TransitionsManager {
   protected autoMountUnmount: boolean
   protected logName: string
   protected showLog: boolean

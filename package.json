@@ -1,15 +1,15 @@
 {
-  "name": "view-mananger",
+  "name": "transitions-mananger",
   "version": "1.0.0",
   "license": "MIT",
   "main": "dist/index.js",
   "author": "Willy Brauner",
   "private": false,
   "source": "src/index.ts",
-  "description": "ViewManager allows to handle and dispatch transitions state from anywhere in the application",
+  "description": "TransitionsManager allows to handle and dispatch transitions state from anywhere in the application",
   "repository": {
     "type": "git",
-    "url": "git://github.com/cher-ami/view-manager.git"
+    "url": "git://github.com/cher-ami/transitions-anager.git"
   },
   "publishConfig": {
     "access": "public"
