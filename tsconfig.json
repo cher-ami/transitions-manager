@@ -1,21 +1,19 @@
 {
   "compilerOptions": {
-    "composite": false,
+    "outDir": "./dist",
+    "rootDir": "./src",
     "module": "esNext",
     "target": "es6",
     "lib": ["dom"],
     "moduleResolution": "node",
-    "types": ["vite" ,"node"],
+    "types": ["vite" ,"node", "jest"],
     "jsx": "react",
+    "composite": false,
     "declaration": true,
     "noImplicitAny": false,
     "esModuleInterop": true,
     "preserveConstEnums": true,
-    "strictNullChecks": false,
-    // allow to not notify conflicts if the same dependency is imported in
-    // two differents packages but not the same version
-    // pass to true for disable this check.
-    "skipLibCheck": false
+    "strictNullChecks": false
   },
   "exclude": ["node_modules", "dist", "test"]
 }
