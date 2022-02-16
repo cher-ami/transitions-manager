@@ -5,7 +5,7 @@
     "target": "es6",
     "lib": ["dom"],
     "moduleResolution": "node",
-    "types": ["vite" ,"node", "jest"],
+    "types": ["vite" ,"node"],
     "jsx": "react",
     "declaration": true,
     "noImplicitAny": false,
