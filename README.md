@@ -1,4 +1,4 @@
-# TransitionsManager
+# Transitions manager
 
 TransitionsManager allows to handle and dispatch transitions state from anywhere in the application.
 It was design for React component transitions but the manager can be used standelone too.
