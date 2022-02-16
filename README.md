@@ -70,10 +70,10 @@ Of course, "awaiting" the promise is not mandatory.
 ## Example
 
 ```shell
-npm i & lerna bootstrap
+npm i
 ```
 
-Start dev server from this package
+Start dev server
 
 ```shell
 npm run dev
