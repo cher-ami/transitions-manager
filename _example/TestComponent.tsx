@@ -1,10 +1,10 @@
 import React, { useLayoutEffect, useRef } from "react"
-import { ViewManager, TPlayState } from "../src/ViewManager"
+import { TransitionsManager, TPlayState } from "../src/TransitionsManager"
 import { gsap } from "gsap"
 const name = "TestComponent"
 
 import debug from "@wbe/debug"
-import { usePlayIn, usePlayOut, useViewManager } from "../src/viewManagerHooks"
+import { usePlayIn, usePlayOut, useTransitionsManager } from "../src/transitionsManagerHooks"
 const log = debug(`front:${name}`)
 
 function TestComponent() {
@@ -32,12 +32,12 @@ function TestComponent() {
    * Solution 1
    */
 
-  usePlayIn(TestComponent.viewManager, async (done) => {
+  usePlayIn(TestComponent.transitionsManager, async (done) => {
     await tl.current.play()
     done()
   })
 
-  usePlayOut(TestComponent.viewManager, async (done) => {
+  usePlayOut(TestComponent.transitionsManager, async (done) => {
     await tl.current.reverse()
     done()
   })
@@ -47,15 +47,15 @@ function TestComponent() {
    */
 
   /*
-    useViewManager(TestComponent.viewManager, async (playState) => {
+    useTransitionsManager(TestComponent.transitionsManager, async (playState) => {
       log("play", playState)
       if (playState === "play-in") {
         await tl.current.play()
-        TestComponent.viewManager.playInComplete()
+        TestComponent.transitionsManager.playInComplete()
       }
       if (playState === "play-out") {
         await tl.current.reverse()
-        TestComponent.viewManager.playOutComplete()
+        TestComponent.transitionsManager.playOutComplete()
       }
     })
 
@@ -71,9 +71,9 @@ function TestComponent() {
 }
 
 /**
- * Add a viewManager instance as static on the component
+ * Add a transitionsManager instance as static on the component
  */
-TestComponent.viewManager = new ViewManager({
+TestComponent.transitionsManager = new TransitionsManager({
   autoMountUnmount: true,
   logName: name,
   showLog: true,

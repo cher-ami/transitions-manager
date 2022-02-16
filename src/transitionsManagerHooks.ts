@@ -1,11 +1,11 @@
 import { useEffect, useLayoutEffect, useState } from "react"
-import { ViewManager, TMountState, TPlayState } from "./ViewManager"
+import { TransitionsManager, TMountState, TPlayState } from "./TransitionsManager"
 
 /**
  * useIsMount
  * @param manager
  */
-export const useIsMount = (manager: ViewManager, deps: any[] = []): boolean => {
+export const useIsMount = (manager: TransitionsManager, deps: any[] = []): boolean => {
   const [mount, setMount] = useState<boolean>(false)
 
   useEffect(() => {
@@ -26,15 +26,15 @@ export const useIsMount = (manager: ViewManager, deps: any[] = []): boolean => {
 }
 
 /**
- * useViewManager
+ * useTransitionsManager
  *
  * @param manager
  * @param callback
  * @param deps
  * @returns
  */
-export const useViewManager = (
-  manager: ViewManager,
+export const useTransitionsManager = (
+  manager: TransitionsManager,
   callback: (playState: TPlayState) => void,
   deps: any[] = []
 ): TPlayState => {
@@ -56,7 +56,7 @@ export const useViewManager = (
  * Execute callback when playState is "play-in" state
  */
 export const usePlayIn = (
-  manager: ViewManager,
+  manager: TransitionsManager,
   callback: (done: () => void) => void,
   deps: any[] = []
 ): void => {
@@ -74,7 +74,7 @@ export const usePlayIn = (
  * Execute callback when playState is "play-out" state
  */
 export const usePlayOut = (
-  manager: ViewManager,
+  manager: TransitionsManager,
   callback: (done: () => void) => void,
   deps: any[] = []
 ): void => {
