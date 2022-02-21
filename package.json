@@ -1,15 +1,14 @@
 {
-  "name": "transitions-mananger",
-  "version": "1.0.0",
+  "name": "@cher-ami/transitions-mananger",
+  "version": "0.1.0",
   "license": "MIT",
   "main": "dist/index.js",
-  "author": "Willy Brauner",
-  "private": false,
+  "author": "Willy Brauner & cher-ami",
   "source": "src/index.ts",
-  "description": "TransitionsManager allows to handle and dispatch transitions state from anywhere in the application",
+  "description": "Transitions manager allows to handle and dispatch transition states from anywhere in the application",
   "repository": {
     "type": "git",
-    "url": "git://github.com/cher-ami/transitions-anager.git"
+    "url": "git://github.com/cher-ami/transitions-manager.git"
   },
   "publishConfig": {
     "access": "public"
