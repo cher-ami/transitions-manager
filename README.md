@@ -55,6 +55,27 @@ await Header.transitionsManager.playIn()
 This method return a promise that will be resolved when the transition is done with `done()` function from the same hook.
 Of course, "awaiting" the promise is not mandatory.
 
+## useTransitionsManager
+
+Instead of handle the transitionsManager play state with `usePlayIn` and `usePlayOut` hooks,
+you can use the `useTransitionsManager` hook in your component.
+
+This one returns the current play state of the transitionsManager instance when it changes.
+In this case, you have to execute the `playInComplete` and `playOutComplete` functions when the transition is done.
+
+```ts
+useTransitionsManager(Header.transitionsManager, async (playState) => {
+  if (playState === "play-in") {
+    await myPlayIn()
+    Header.transitionsManager.playInComplete()
+  }
+  if (playState === "play-out") {
+    await myPlayOut()
+    Header.transitionsManager.playOutComplete()
+  }
+})
+```
+
 ### Mount and unmount
 
 At this point, the component is eable to be play-in and play-out by his own transitionsManager instance from anywhere in the application.
