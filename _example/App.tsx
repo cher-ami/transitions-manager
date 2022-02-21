@@ -3,14 +3,12 @@ import { useIsMount } from "../src/transitionsManagerHooks"
 import TestComponent from "./TestComponent"
 
 const App = () => {
-
   const mountTestComponent = useIsMount(TestComponent.transitionsManager)
 
   return (
-    <div>
-      <button onClick={() => TestComponent.transitionsManager.playIn()}> PLAY_IN component </button>
-      <button onClick={() => TestComponent.transitionsManager.playOut()}> PLAY_OUT component </button>
-
+    <div className="App">
+      <button onClick={() => TestComponent.transitionsManager.playIn()}>play-in</button>
+      <button onClick={() => TestComponent.transitionsManager.playOut()}>play-out</button>
       {mountTestComponent && <TestComponent />}
     </div>
   )

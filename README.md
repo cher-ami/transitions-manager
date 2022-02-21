@@ -1,9 +1,26 @@
-# Transitions manager
+<h1 align="center" style="text-align:center">Transitions manager</h1>
 
-TransitionsManager allows to handle and dispatch transitions state from anywhere in the application.
-It was design for React component transitions but the manager can be used standelone too.
+![](https://img.shields.io/npm/v/@cher-ami/transitions-manager/latest.svg)
+![](https://img.shields.io/bundlephobia/minzip/@cher-ami/transitions-manager.svg)
+![](https://img.shields.io/npm/dt/@cher-ami/transitions-manager.svg)
+![](https://img.shields.io/npm/l/@cher-ami/transitions-manager.svg)
+
+<p align="center">
+Transitions manager allows to handle and dispatch transition states from anywhere in the application.
+<br/>
+<br/>
+<img alt="demo" src="/screen.gif"/>
+</p>
+
+## Installation
+
+```
+npm i @cher-ami/transitions-manager
+```
 
 ## Usage
+
+### PlayIn and playOut
 
 Create a new transitionsManager instance, as static, on a React component.  
 Then, when handle the manager play state with `usePlayIn` and `usePlayOut` hooks.
@@ -38,6 +55,67 @@ await Header.transitionsManager.playIn()
 This method return a promise that will be resolved when the transition is done with `done()` function from the same hook.
 Of course, "awaiting" the promise is not mandatory.
 
+### useTransitionsManager
+
+Instead of handle the transitionsManager play state with `usePlayIn` and `usePlayOut` hooks,
+you can use the `useTransitionsManager` hook in your component.
+
+This one returns the current play state of the transitionsManager instance when it changes.
+In this case, you have to execute the `playInComplete` and `playOutComplete` functions when the transition is done.
+
+```ts
+useTransitionsManager(Header.transitionsManager, async (playState) => {
+  if (playState === "play-in") {
+    await myPlayIn()
+    Header.transitionsManager.playInComplete()
+  }
+  if (playState === "play-out") {
+    await myPlayOut()
+    Header.transitionsManager.playOutComplete()
+  }
+})
+```
+
+### Mount and unmount
+
+At this point, the component is eable to be play-in and play-out by his own transitionsManager instance from anywhere in the application.
+It's also possible to mount and unmount before and play-in and after play-out.
+
+By using `useIsMount` hook from the parent component, you can check the mount and unmount boolean state to condition the rendering.
+
+```ts
+const App = () => {
+  const mountHeader = useIsMount(Header.transitionsManager)
+  return <div>{mountHeader && <Header />}</div>
+}
+```
+
+Now, you can mount and unmount the component.
+
+```ts
+await Header.transitionsManager.mount()
+await Header.transitionsManager.playIn()
+// ...
+await Header.transitionsManager.playOut()
+await Header.transitionsManager.unmount()
+```
+
+Writting all the process is a bit long, but you can use the manager in a more simple way.
+If you don't want to specify each time `mount` and `unmount` methods, you can pass `autoMountUnmount` param to `true` in the constructor.
+
+```ts
+Header.transitionsManager = new TransitionsManager({ autoMountUnmount: true })
+```
+
+`playIn` method will call `mount` methods before is execution, and `playOut` will call `unmount` methods after is execution automatically.
+With `autoMountUnmount`, it will get the same result as in the previous example with that code:
+
+```ts
+await Header.transitionsManager.playIn() // auto mount + playIn
+// ...
+await Header.transitionsManager.playOut() // playOut + auto unmount
+```
+
 ## debugging
 
 [@wbe/debug](https://github.com/willybrauner/debug) is used on this project. It allows to easily get logs informations on development and production modes.
@@ -48,7 +126,7 @@ Of course, "awaiting" the promise is not mandatory.
 localStorage.debug = "TransitionsManager:*"
 ```
 
-- Optionaly, pass a name param to the instance allows to print it on the debug namespace.
+- Optionally, pass a name parameter to the instance to print it in the debug namespace.
 
 ```ts
 Header.transitionsManager = new TransitionsManager({ name: "Header" })
@@ -58,29 +136,27 @@ Header.transitionsManager = new TransitionsManager({ name: "Header" })
 
 ### Mount
 
-**`mount(): Promise<void>`**
+`mount(): Promise<void>`
 
-**`mountComplete(): void`**
+`mountComplete(): void`
 
 ### Unmount
 
-**`unmount(): Promise<void>`**
+`unmount(): Promise<void>`
 
-**`unmountComplete(): void`**
+`unmountComplete(): void`
 
 ### PlayIn
 
-**`playIn(): Promise<void>`**
+`playIn(): Promise<void>`
 
-**`playInComplete(): void`**
+`playInComplete(): void`
 
 ### PlayOut
 
-**`playOut(): Promise<void>`**
+`playOut(): Promise<void>`
 
-**`playOutComplete(): void`**
-
-## Dependencies
+`playOutComplete(): void`
 
 ## Example
 
@@ -93,3 +169,11 @@ Start dev server
 ```shell
 npm run dev
 ```
+
+## Licence
+
+[MIT](./LICENSE)
+
+## Credits
+
+[Willy Brauner](https://github.com/willybrauner)

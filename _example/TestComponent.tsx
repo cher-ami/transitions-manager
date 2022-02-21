@@ -68,8 +68,8 @@ function TestComponent() {
   // --------------------------––--------------------------–– RENDER
 
   return (
-    <div ref={$root} style={{ fontSize: "30px" }}>
-      {name}
+    <div ref={$root} className={name}>
+      Transitions manager
     </div>
   )
 }
@@ -80,7 +80,6 @@ function TestComponent() {
 TestComponent.transitionsManager = new TransitionsManager({
   autoMountUnmount: true,
   name: name,
-  debug: true,
 })
 
 export default TestComponent
