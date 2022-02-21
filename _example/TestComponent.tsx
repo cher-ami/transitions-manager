@@ -4,7 +4,11 @@ import { gsap } from "gsap"
 const name = "TestComponent"
 
 import debug from "@wbe/debug"
-import { usePlayIn, usePlayOut, useTransitionsManager } from "../src/transitionsManagerHooks"
+import {
+  usePlayIn,
+  usePlayOut,
+  useTransitionsManager,
+} from "../src/transitionsManagerHooks"
 const log = debug(`front:${name}`)
 
 function TestComponent() {
@@ -75,8 +79,8 @@ function TestComponent() {
  */
 TestComponent.transitionsManager = new TransitionsManager({
   autoMountUnmount: true,
-  logName: name,
-  showLog: true,
+  name: name,
+  debug: true,
 })
 
 export default TestComponent

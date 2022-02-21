@@ -3,26 +3,25 @@ import debug from "@wbe/debug"
 import { deferredPromise, TDeferredPromise } from "@wbe/deferred-promise"
 
 const componentName = "TransitionsManager"
-const log = debug(`front:${componentName}`)
-
 export type TPlayState = "hidden" | "play-out" | "play-in" | "visible"
 export type TMountState = "mount" | "unmount"
 
 type TContructor = {
   autoMountUnmount?: boolean
-  logName?: string
-  showLog?: boolean
+  name?: string
 }
 
 export class TransitionsManager {
   protected autoMountUnmount: boolean
-  protected logName: string
-  protected showLog: boolean
+  protected name: string
+  protected log
 
-  constructor({ autoMountUnmount = true, logName = "", showLog = false }: TContructor) {
+  constructor({ autoMountUnmount = false, name = null }: TContructor) {
     this.autoMountUnmount = autoMountUnmount
-    this.logName = logName
-    this.showLog = showLog
+    this.name = name
+    this.log = debug(
+      [componentName, this.name != null && `:${this.name}`].filter((e) => e).join("")
+    )
   }
 
   public mountStateSignal = StateSignal<TMountState>("unmount")
@@ -36,9 +35,9 @@ export class TransitionsManager {
   // ------------------------------------------------------------------------- MOUNT / UNMOUNT
 
   public mount(): Promise<void> {
-    this.showLog && log(this.logName, "mount")
+    this.log("mount")
     if (this.mountStateSignal.state !== "unmount") {
-      this.showLog && log(this.logName, "Component is not unmount, return.")
+      this.log("Component is not unmount, return.")
       return
     }
     this.mountDeferred = deferredPromise<void>()
@@ -47,14 +46,14 @@ export class TransitionsManager {
   }
 
   public mountComplete(): void {
-    this.showLog && log(this.logName, "mount Complete")
+    this.log("mount Complete")
     this.mountDeferred.resolve()
   }
 
   public unmount(): Promise<void> {
-    this.showLog && log(this.logName, "unmount")
+    this.log("unmount")
     if (this.mountStateSignal.state !== "mount") {
-      this.showLog && log(this.logName, "Component is not mount, return.")
+      this.log("Component is not mount, return.")
       return
     }
     this.unmountDeferred = deferredPromise<void>()
@@ -63,7 +62,7 @@ export class TransitionsManager {
   }
 
   public unmountComplete(): void {
-    this.showLog && log(this.logName, "unmount Complete")
+    this.log("unmount Complete")
     this.unmountDeferred?.resolve()
   }
 
@@ -71,35 +70,35 @@ export class TransitionsManager {
 
   public async playIn(): Promise<void> {
     if (this.autoMountUnmount) {
-      log(this.logName, "> auto mount")
+      this.log("> auto mount")
       await this.mount()
     }
 
-    this.showLog && log(this.logName, "playIn")
+    this.log("playIn")
     this.playInDeferred = deferredPromise<void>()
     this.playStateSignal.dispatch("play-in")
     return this.playInDeferred.promise
   }
 
   public playInComplete(): void {
-    this.showLog && log(this.logName, "playIn Complete")
+    this.log("playIn Complete")
     this.playStateSignal.dispatch("visible")
     this.playInDeferred?.resolve()
   }
 
   public playOut(): Promise<void> {
-    this.showLog && log(this.logName, "playOut")
+    this.log("playOut")
     this.playOutDeferred = deferredPromise<void>()
     this.playStateSignal.dispatch("play-out")
     return this.playOutDeferred.promise
   }
 
   public playOutComplete(): void {
-    this.showLog && log(this.logName, "playOut Complete")
+    this.log("playOut Complete")
     this.playStateSignal.dispatch("hidden")
     this.playOutDeferred?.resolve()
     if (this.autoMountUnmount) {
-      log(this.logName, "> auto unmount")
+      this.log("> auto unmount")
       this.unmount()
     }
   }
