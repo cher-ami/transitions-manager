@@ -55,7 +55,7 @@ await Header.transitionsManager.playIn()
 This method return a promise that will be resolved when the transition is done with `done()` function from the same hook.
 Of course, "awaiting" the promise is not mandatory.
 
-## useTransitionsManager
+### useTransitionsManager
 
 Instead of handle the transitionsManager play state with `usePlayIn` and `usePlayOut` hooks,
 you can use the `useTransitionsManager` hook in your component.
@@ -113,7 +113,7 @@ With `autoMountUnmount`, it will get the same result as in the previous example 
 ```ts
 await Header.transitionsManager.playIn() // auto mount + playIn
 // ...
-await Header.transitionsManager.playOut() // playout + auto unmount
+await Header.transitionsManager.playOut() // playOut + auto unmount
 ```
 
 ## debugging
@@ -136,27 +136,27 @@ Header.transitionsManager = new TransitionsManager({ name: "Header" })
 
 ### Mount
 
-**`mount(): Promise<void>`**
+`mount(): Promise<void>`
 
-**`mountComplete(): void`**
+`mountComplete(): void`
 
 ### Unmount
 
-**`unmount(): Promise<void>`**
+`unmount(): Promise<void>`
 
-**`unmountComplete(): void`**
+`unmountComplete(): void`
 
 ### PlayIn
 
-**`playIn(): Promise<void>`**
+`playIn(): Promise<void>`
 
-**`playInComplete(): void`**
+`playInComplete(): void`
 
 ### PlayOut
 
-**`playOut(): Promise<void>`**
+`playOut(): Promise<void>`
 
-**`playOutComplete(): void`**
+`playOutComplete(): void`
 
 ## Example
 
