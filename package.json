@@ -1,5 +1,5 @@
 {
-  "name": "@cher-ami/transitions-mananger",
+  "name": "@cher-ami/transitions-manager",
   "version": "0.1.1",
   "license": "MIT",
   "main": "dist/index.js",
