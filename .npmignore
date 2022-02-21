@@ -1,0 +1,13 @@
+.github
+.idea
+.cache
+_example
+node_modules
+.gitignore
+src
+test
+.babelrc
+.prettierignore
+tsconfig.json
+vite.config.ts
+screen.gif
