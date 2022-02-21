@@ -170,6 +170,10 @@ Start dev server
 npm run dev
 ```
 
+## Licence
+
+[MIT](./LICENSE)
+
 ## Credits
 
 [Willy Brauner](https://github.com/willybrauner)
