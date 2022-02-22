@@ -1,8 +1,10 @@
 <h1 align="center" style="text-align:center">Transitions manager</h1>
 
+<p align="center">
 ![](https://img.shields.io/npm/v/@cher-ami/transitions-manager)
 ![](https://img.shields.io/bundlephobia/minzip/@cher-ami/transitions-manager)
 ![](https://img.shields.io/npm/dt/@cher-ami/transitions-manager)
+</p>
 
 <p align="center">
 Transitions manager allows to handle and dispatch transition states from anywhere in the application.
