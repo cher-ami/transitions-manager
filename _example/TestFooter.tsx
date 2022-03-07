@@ -1,7 +1,7 @@
 import React, { useEffect, useLayoutEffect, useRef } from "react"
-import { TransitionsManager, TPlayState } from "../src/TransitionsManager"
+import { TransitionsManager } from "../src/TransitionsManager"
 import { gsap } from "gsap"
-const name = "TestComponent"
+const name = "TestFooter"
 
 import debug from "@wbe/debug"
 import {
@@ -11,7 +11,7 @@ import {
 } from "../src/transitionsManagerHooks"
 const log = debug(`front:${name}`)
 
-function TestComponent() {
+function TestFooter() {
   const $root = useRef(null)
 
   // --------------------------––--------------------------–– INIT TIMELINE
@@ -34,44 +34,41 @@ function TestComponent() {
 
   useEffect(()=> 
   {
-    TestComponent.playInTween = gsap.fromTo(
+    TestFooter.playInTween = gsap.fromTo(
       $root.current,
       { autoAlpha: 0,  y: 20 },
       { autoAlpha: 1, y: 0 }
     )
   },[])
 
-
-
-
-
   /**
    * Solution 1
    */
 
-   usePlayIn(TestComponent.transitionsManager, async (done) => {
+  usePlayIn(TestFooter.transitionsManager, async (done) => {
     await tl.current.play()
     done()
   })
 
-  usePlayOut(TestComponent.transitionsManager, async (done) => {
+  usePlayOut(TestFooter.transitionsManager, async (done) => {
     await tl.current.reverse()
     done()
   })
+
   /**
    * Solution 2
    */
 
   /*
-    useTransitionsManager(TestComponent.transitionsManager, async (playState) => {
+    useTransitionsManager(TestFooter.transitionsManager, async (playState) => {
       log("play", playState)
       if (playState === "play-in") {
         await tl.current.play()
-        TestComponent.transitionsManager.playInComplete()
+        TestFooter.transitionsManager.playInComplete()
       }
       if (playState === "play-out") {
         await tl.current.reverse()
-        TestComponent.transitionsManager.playOutComplete()
+        TestFooter.transitionsManager.playOutComplete()
       }
     })
 
@@ -81,7 +78,7 @@ function TestComponent() {
 
   return (
     <div ref={$root} className={name}>
-      Transitions manager
+      Footer
     </div>
   )
 }
@@ -90,10 +87,10 @@ function TestComponent() {
  * Add a transitionsManager instance as static on the component
  */
 
- TestComponent.playInTween = null
-TestComponent.transitionsManager = new TransitionsManager({
+TestFooter.playInTween = null
+TestFooter.transitionsManager = new TransitionsManager({
   autoMountUnmount: true,
   name: name,
 })
 
-export default TestComponent
+export default TestFooter

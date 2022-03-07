@@ -68,7 +68,19 @@ export class TransitionsManager {
 
   // ------------------------------------------------------------------------- PLAYIN / PLAYOUT
 
-  public async playIn(): Promise<void> {
+
+  protected _playInAnim;
+  public set playInAnim(playInAnim) { this._playInAnim = playInAnim }
+  public get playInAnim() { return this._playInAnim }
+
+  protected _playOutAnim;
+  public set playOutAnim(playOutAnim) { this._playOutAnim = playOutAnim }
+  public get playOutAnim() { return this._playOutAnim }
+
+
+  
+
+  public  playIn = async (): Promise<void> => {
     if (this.autoMountUnmount) {
       this.log("> auto mount")
       await this.mount()
@@ -86,7 +98,7 @@ export class TransitionsManager {
     this.playInDeferred?.resolve()
   }
 
-  public playOut(): Promise<void> {
+  public playOut = async (): Promise<void> => {
     this.log("playOut")
     this.playOutDeferred = deferredPromise<void>()
     this.playStateSignal.dispatch("play-out")
