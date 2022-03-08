@@ -160,7 +160,7 @@ Header.transitionsManager = new TransitionsManager({ name: "Header" })
 
 ## Utils
 
-**`stagger(delay: number = 1, anims: ()=> any[]): [promise: () => Promise<any>, cancel: () => void]`**
+**`stagger(delay: number = 1, anims: (()=> any)[]): [promise: () => Promise<any>, cancel: () => void]`**
 
 In some case, you want to execute a list of transitions in a staggered way.
 Staggered transition can be setted with the util `stagger` function.

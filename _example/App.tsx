@@ -2,18 +2,18 @@ import { resolve } from "path"
 import React from "react"
 import { stagger } from "../src"
 import { useIsMount } from "../src/transitionsManagerHooks"
-import TestComponent from "./TestHeader"
+import TestHeader from "./TestHeader"
 import TestFooter from "./TestFooter"
 
 const App = () => {
-  const mountTestComponent = useIsMount(TestComponent.transitionsManager)
+  const mountTestHeader = useIsMount(TestHeader.transitionsManager)
   const mountTestFooter = useIsMount(TestFooter.transitionsManager)
 
   const clickPlayIn = async () => {
 
     const [start, clear] = stagger(0.1,
     [
-      TestComponent.transitionsManager.playIn,
+      TestHeader.transitionsManager.playIn,
       TestFooter.transitionsManager.playIn,
     ])
 
@@ -26,7 +26,7 @@ const App = () => {
     const [playOut, clear] = stagger(
       0.1,
       [
-        TestComponent.transitionsManager.playOut,
+        TestHeader.transitionsManager.playOut,
         TestFooter.transitionsManager.playOut,
       ].reverse()
     )
@@ -39,7 +39,7 @@ const App = () => {
     <div className="App">
       <button onClick={clickPlayIn}>play-in</button>
       <button onClick={clickPlayOut}>play-out</button>
-      {mountTestComponent && <TestComponent />}
+      {mountTestHeader && <TestHeader />}
       {mountTestFooter && <TestFooter />}
     </div>
   )
