@@ -57,7 +57,7 @@ export const useTransitionsManager = (
  */
 export const usePlayIn = (
   manager: TransitionsManager,
-  callback: (done: () => void) => any,
+  callback: (done: () => void) => void,
   deps: any[] = []
 ): void => {
   useLayoutEffect(() => {

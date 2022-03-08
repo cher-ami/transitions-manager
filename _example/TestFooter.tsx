@@ -1,14 +1,10 @@
-import React, { useEffect, useLayoutEffect, useRef } from "react"
+import React, { useLayoutEffect, useRef } from "react"
 import { TransitionsManager } from "../src/TransitionsManager"
 import { gsap } from "gsap"
 const name = "TestFooter"
 
 import debug from "@wbe/debug"
-import {
-  usePlayIn,
-  usePlayOut,
-  useTransitionsManager,
-} from "../src/transitionsManagerHooks"
+import { usePlayIn, usePlayOut } from "../src/transitionsManagerHooks"
 const log = debug(`front:${name}`)
 
 function TestFooter() {
@@ -32,15 +28,6 @@ function TestFooter() {
 
   // --------------------------––--------------------------–– VIEW MANAGER
 
-  useEffect(()=> 
-  {
-    TestFooter.playInTween = gsap.fromTo(
-      $root.current,
-      { autoAlpha: 0,  y: 20 },
-      { autoAlpha: 1, y: 0 }
-    )
-  },[])
-
   /**
    * Solution 1
    */
@@ -55,25 +42,6 @@ function TestFooter() {
     done()
   })
 
-  /**
-   * Solution 2
-   */
-
-  /*
-    useTransitionsManager(TestFooter.transitionsManager, async (playState) => {
-      log("play", playState)
-      if (playState === "play-in") {
-        await tl.current.play()
-        TestFooter.transitionsManager.playInComplete()
-      }
-      if (playState === "play-out") {
-        await tl.current.reverse()
-        TestFooter.transitionsManager.playOutComplete()
-      }
-    })
-
-  */
-
   // --------------------------––--------------------------–– RENDER
 
   return (
@@ -87,7 +55,6 @@ function TestFooter() {
  * Add a transitionsManager instance as static on the component
  */
 
-TestFooter.playInTween = null
 TestFooter.transitionsManager = new TransitionsManager({
   autoMountUnmount: true,
   name: name,

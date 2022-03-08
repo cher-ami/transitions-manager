@@ -1,17 +1,13 @@
-import React, { useEffect, useLayoutEffect, useRef } from "react"
-import { TransitionsManager, TPlayState } from "../src/TransitionsManager"
+import React, { useLayoutEffect, useRef } from "react"
+import { TransitionsManager } from "../src/TransitionsManager"
 import { gsap } from "gsap"
-const name = "TestComponent"
+const name = "TestHeader"
 
 import debug from "@wbe/debug"
-import {
-  usePlayIn,
-  usePlayOut,
-  useTransitionsManager,
-} from "../src/transitionsManagerHooks"
+import { usePlayIn, usePlayOut } from "../src/transitionsManagerHooks"
 const log = debug(`front:${name}`)
 
-function TestComponent() {
+function TestHeader() {
   const $root = useRef(null)
 
   // --------------------------––--------------------------–– INIT TIMELINE
@@ -32,29 +28,16 @@ function TestComponent() {
 
   // --------------------------––--------------------------–– VIEW MANAGER
 
-  useEffect(()=> 
-  {
-    TestComponent.playInTween = gsap.fromTo(
-      $root.current,
-      { autoAlpha: 0,  y: 20 },
-      { autoAlpha: 1, y: 0 }
-    )
-  },[])
-
-
-
-
-
   /**
    * Solution 1
    */
 
-   usePlayIn(TestComponent.transitionsManager, async (done) => {
+  usePlayIn(TestHeader.transitionsManager, async (done) => {
     await tl.current.play()
     done()
   })
 
-  usePlayOut(TestComponent.transitionsManager, async (done) => {
+  usePlayOut(TestHeader.transitionsManager, async (done) => {
     await tl.current.reverse()
     done()
   })
@@ -63,15 +46,14 @@ function TestComponent() {
    */
 
   /*
-    useTransitionsManager(TestComponent.transitionsManager, async (playState) => {
-      log("play", playState)
+    useTransitionsManager(TestHeader.transitionsManager, async (playState) => {
       if (playState === "play-in") {
         await tl.current.play()
-        TestComponent.transitionsManager.playInComplete()
+        TestHeader.transitionsManager.playInComplete()
       }
       if (playState === "play-out") {
         await tl.current.reverse()
-        TestComponent.transitionsManager.playOutComplete()
+        TestHeader.transitionsManager.playOutComplete()
       }
     })
 
@@ -89,11 +71,9 @@ function TestComponent() {
 /**
  * Add a transitionsManager instance as static on the component
  */
-
- TestComponent.playInTween = null
-TestComponent.transitionsManager = new TransitionsManager({
+TestHeader.transitionsManager = new TransitionsManager({
   autoMountUnmount: true,
   name: name,
 })
 
-export default TestComponent
+export default TestHeader
