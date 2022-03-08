@@ -157,6 +157,30 @@ Header.transitionsManager = new TransitionsManager({ name: "Header" })
 
 `playOutComplete(): void`
 
+
+## Utils
+
+**`stagger(delay: number = 1, anims: ()=> any[]): [promise: () => Promise<any>, cancel: () => void]`**
+
+In some case, you want to execute a list of transitions in a staggered way.
+Staggered transition can be setted with the util `stagger` function.
+
+```ts
+import {stagger} from "@cher-ami/transitions-manager"
+
+const [start, clear] = stagger(0.1, [
+  Header.transitionsManager.playIn,
+  Footer.transitionsManager.playIn,
+])
+
+// start staggered transition
+await start()
+
+// clear staggered transition if needed
+clear()
+```
+
+
 ## Example
 
 ```shell

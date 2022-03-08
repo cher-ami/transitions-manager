@@ -1,14 +1,14 @@
 /**
- * Exectute transition with 
- * @param delay
- * @param anims
- * @returns
+ * Exectute staggered transitions
+ * 
+ * @param delay (second)
+ * @param anims Array of transition functions
  */
 
 // prettier-ignore
 export function stagger(
   delay = 1,
-  anims: any[]
+  anims: ()=> any[]
 ): [promise: () => Promise<any>, cancel: () => void] {
   
   const timeouts = []
