@@ -1,9 +1,10 @@
 <h1 align="center" style="text-align:center">Transitions manager</h1>
 
-![](https://img.shields.io/npm/v/@cher-ami/transitions-manager)
-![](https://img.shields.io/bundlephobia/minzip/@cher-ami/transitions-manager)
-![](https://img.shields.io/npm/dt/@cher-ami/transitions-manager)
-
+<p align="center">
+<img alt="npm" src="https://img.shields.io/npm/v/@cher-ami/transitions-manager">
+<img alt="build" src="https://img.shields.io/bundlephobia/minzip/@cher-ami/transitions-manager">
+<img alt="build" src="https://img.shields.io/npm/dt/@cher-ami/transitions-manager">
+</p>
 <p align="center">
 Transitions manager allows to handle and dispatch transition states from anywhere in the application.
 <br/>
@@ -156,6 +157,34 @@ Header.transitionsManager = new TransitionsManager({ name: "Header" })
 `playOut(): Promise<void>`
 
 `playOutComplete(): void`
+
+
+## Utils
+
+**`stagger(delay: number = 1, anims: (()=> any)[]): [promise: () => Promise<any>, cancel: () => void]`**
+
+In some case, you want to execute a list of transitions in a staggered way.
+Staggered transition can be setted with the util `stagger` function.
+
+```ts
+import {stagger} from "@cher-ami/transitions-manager"
+
+const [start, clear] = stagger(0.1, [
+  Header.transitionsManager.playIn,
+  Footer.transitionsManager.playIn,
+])
+
+// start staggered transition
+await start()
+
+// clear staggered transition if needed
+clear()
+```
+
+<p align="center">
+  <img src="/screen-stagger.gif"/>
+</p>
+
 
 ## Example
 
