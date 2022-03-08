@@ -63,7 +63,7 @@ function TestHeader() {
 
   return (
     <div ref={$root} className={name}>
-      Transitions manager
+      Header
     </div>
   )
 }

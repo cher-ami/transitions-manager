@@ -181,6 +181,10 @@ await start()
 clear()
 ```
 
+<p align="center">
+  <img src="/screen-stagger.gif"/>
+</p>
+
 
 ## Example
 
