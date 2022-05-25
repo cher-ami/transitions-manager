@@ -20,7 +20,7 @@
     "clean": "rm -rf dist",
     "test": "jest",
     "compile": "npm run clean && microbundle --jsx React.createElement",
-    "pre-publish": "npm run compile && npm run test"
+    "pre-publish": "npm run compile"
   },
   "dependencies": {
     "@solid-js/signal": "^1.0.2",
