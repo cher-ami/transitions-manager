@@ -76,7 +76,8 @@ export class TransitionsManager {
 
     this.log("playIn")
     this.playInDeferred = deferredPromise<void>()
-    this.playStateSignal.dispatch("play-in")
+    // wait next frame to be sure the component is mounted and listen playStateSignal
+    setTimeout(()=> this.playStateSignal.dispatch("play-in"), 0)
     return this.playInDeferred.promise
   }
 
