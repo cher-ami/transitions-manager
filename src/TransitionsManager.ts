@@ -68,16 +68,20 @@ export class TransitionsManager {
 
   // ------------------------------------------------------------------------- PLAYIN / PLAYOUT
 
-  public  playIn = async (): Promise<void> => {
+  public playIn = async (): Promise<void> => {
     if (this.autoMountUnmount) {
       this.log("> auto mount")
       await this.mount()
     }
-
-    this.log("playIn")
     this.playInDeferred = deferredPromise<void>()
     // wait next frame to be sure the component is mounted and listen playStateSignal
-    setTimeout(()=> this.playStateSignal.dispatch("play-in"), 0)
+    await new Promise((resolve:any) => {
+      setTimeout(()=> {
+        this.log("playIn (with 10ms delay)")
+        this.playStateSignal.dispatch("play-in")
+        resolve()
+      }, 10)
+    })
     return this.playInDeferred.promise
   }
 

@@ -1,6 +1,6 @@
 {
   "name": "@cher-ami/transitions-manager",
-  "version": "0.3.0",
+  "version": "0.3.2",
   "license": "MIT",
   "main": "dist/index.js",
   "author": "Willy Brauner & cher-ami",
@@ -20,7 +20,7 @@
     "clean": "rm -rf dist",
     "test": "jest",
     "compile": "npm run clean && microbundle --jsx React.createElement",
-    "pre-publish": "npm run compile && npm run test"
+    "pre-publish": "npm run compile"
   },
   "dependencies": {
     "@solid-js/signal": "^1.0.2",
