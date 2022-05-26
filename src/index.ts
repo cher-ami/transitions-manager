@@ -1,5 +1,5 @@
 export { TransitionsManager } from "./TransitionsManager"
 export type { TPlayState, TMountState } from "./TransitionsManager"
 export { useIsMount, usePlayIn, usePlayOut, useTransitionsManager } from "./transitionsManagerHooks"
-export { TransitionsManagerHoc } from "./TransitionsManagerHoc"
+export { TransitionsHoc } from "./TransitionsHOC"
 export { stagger } from "./utils"

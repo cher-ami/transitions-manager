@@ -1,6 +1,6 @@
 import React, { useLayoutEffect, useRef} from "react"
 import {TransitionsManager, usePlayIn, usePlayOut} from "../src"
-import {TransitionsManagerHoc} from "../src"
+import {TransitionsHoc} from "../src"
 import { gsap } from "gsap"
 
 const name = "TestHeader"
@@ -53,9 +53,6 @@ function Header(props: {className?: string}):JSX.Element {
   )
 }
 
-export const HeaderTransitionsManager = new TransitionsManager({
-  autoMountUnmount: true,
-  name: "Header"
-})
+export const HeaderTransitionsManager = new TransitionsManager()
 
-export default TransitionsManagerHoc(Header, HeaderTransitionsManager)
+export default TransitionsHoc(Header, HeaderTransitionsManager)

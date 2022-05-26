@@ -14,10 +14,10 @@ export class TransitionsManager {
   public name: string
   protected log
 
-  constructor({ autoMountUnmount = false, name = null }: {
+  constructor({ autoMountUnmount = true, name = null }: {
     autoMountUnmount?: boolean
     name?: string
-  }) {
+  } = {}) {
     this.autoMountUnmount = autoMountUnmount
     this.name = name
     this.log = debug(
