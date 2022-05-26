@@ -1,17 +1,13 @@
 import React from "react"
-import { useIsMount } from "../src"
-import TestHeader, { testHeaderTransitionsManager } from "./TestHeader"
-import TestFooter from "./TestFooter"
+import Header, {HeaderTransitionsManager} from "./Header"
 
 const App = () => {
-  const mountTestFooter = useIsMount(TestFooter.transitionsManager)
-
   const clickPlayIn = async () => {
-    testHeaderTransitionsManager.playIn()
+    HeaderTransitionsManager.playIn()
   }
 
   const clickPlayOut = async () => {
-    await testHeaderTransitionsManager.playOut()
+    await HeaderTransitionsManager.playOut()
     console.log("end !")
   }
 
@@ -19,7 +15,7 @@ const App = () => {
     <div className="App">
       <button onClick={clickPlayIn}>play-in</button>
       <button onClick={clickPlayOut}>play-out</button>
-      <TestHeader className={"hello"} />
+      <Header className={"hello"} />
     </div>
   )
 }
