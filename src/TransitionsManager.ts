@@ -1,10 +1,28 @@
 import { StateSignal } from "@solid-js/signal"
 import debug from "@wbe/debug"
-import { deferredPromise, TDeferredPromise } from "@wbe/deferred-promise"
 
 const componentName = "TransitionsManager"
 export type TPlayState = "hidden" | "play-out" | "play-in" | "visible"
 export type TMountState = "mount" | "unmount"
+
+export type TDeferredPromise<T> = {
+  promise: Promise<T>;
+  resolve: (resolve?: T) => void;
+  reject: (error?: Error | any) => void;
+};
+
+/**
+ * @name deferredPromise
+ * @return TDeferredPromise
+ */
+export function deferredPromise<T>(): TDeferredPromise<T> {
+  const deferred: TDeferredPromise<T> | any = {};
+  deferred.promise = new Promise((resolve, reject) => {
+    deferred.resolve = resolve;
+    deferred.reject = reject;
+  });
+  return deferred;
+}
 
 /**
  * TransitionsManager
