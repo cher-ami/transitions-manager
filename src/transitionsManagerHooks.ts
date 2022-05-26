@@ -4,6 +4,7 @@ import { TransitionsManager, TMountState, TPlayState } from "./TransitionsManage
 /**
  * useIsMount
  * @param manager
+ * @param deps
  */
 export const useIsMount = (manager: TransitionsManager, deps: any[] = []): boolean => {
   const [mount, setMount] = useState<boolean>(false)

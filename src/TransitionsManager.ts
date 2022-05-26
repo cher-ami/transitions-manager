@@ -46,8 +46,8 @@ export class TransitionsManager {
   }
 
   public mountComplete(): void {
-    this.log("mount Complete")
-    this.mountDeferred.resolve()
+    this.log("mount Complete", this.mountDeferred)
+    this.mountDeferred?.resolve()
   }
 
   public unmount(): Promise<void> {

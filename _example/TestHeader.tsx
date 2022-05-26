@@ -1,13 +1,14 @@
 import React, { useLayoutEffect, useRef } from "react"
-import { TransitionsManager } from "../src/TransitionsManager"
+import { TransitionsManager } from "../src"
+import { usePlayIn, usePlayOut } from "../src"
+import {mountHoc} from "../src/MountHoc"
 import { gsap } from "gsap"
-const name = "TestHeader"
 
+const name = "TestHeader"
 import debug from "@wbe/debug"
-import { usePlayIn, usePlayOut } from "../src/transitionsManagerHooks"
 const log = debug(`front:${name}`)
 
-function TestHeader() {
+function TestHeader(props: {className?: string}) {
   const $root = useRef(null)
 
   // --------------------------––--------------------------–– INIT TIMELINE
@@ -32,12 +33,12 @@ function TestHeader() {
    * Solution 1
    */
 
-  usePlayIn(TestHeader.transitionsManager, async (done) => {
+  usePlayIn(TestHeaderTransitionsManager, async (done) => {
     await tl.current.play()
     done()
   })
 
-  usePlayOut(TestHeader.transitionsManager, async (done) => {
+  usePlayOut(TestHeaderTransitionsManager, async (done) => {
     await tl.current.reverse()
     done()
   })
@@ -46,7 +47,7 @@ function TestHeader() {
    */
 
   /*
-    useTransitionsManager(TestHeader.transitionsManager, async (playState) => {
+    useTransitionsManager(TestHeaderTransitionsManager, async (playState) => {
       if (playState === "play-in") {
         await tl.current.play()
         TestHeader.transitionsManager.playInComplete()
@@ -62,18 +63,19 @@ function TestHeader() {
   // --------------------------––--------------------------–– RENDER
 
   return (
-    <div ref={$root} className={name}>
+    <div ref={$root} className={props.className}>
       Header
     </div>
   )
 }
 
 /**
- * Add a transitionsManager instance as static on the component
+ * Add a transitionsManager instance
  */
-TestHeader.transitionsManager = new TransitionsManager({
+
+export const TestHeaderTransitionsManager = new TransitionsManager({
   autoMountUnmount: true,
   name: name,
 })
 
-export default TestHeader
+export default mountHoc(TestHeader, TestHeaderTransitionsManager)
