@@ -1,22 +1,17 @@
-import { resolve } from "path"
 import React from "react"
-import { stagger } from "../src"
 import { useIsMount } from "../src"
-import TestHeader, { TestHeaderTransitionsManager } from "./TestHeader"
+import TestHeader, { testHeaderTransitionsManager } from "./TestHeader"
 import TestFooter from "./TestFooter"
 
 const App = () => {
   const mountTestFooter = useIsMount(TestFooter.transitionsManager)
 
   const clickPlayIn = async () => {
-
-    TestHeaderTransitionsManager.playIn()
-
-
+    testHeaderTransitionsManager.playIn()
   }
 
   const clickPlayOut = async () => {
-    await TestHeaderTransitionsManager.playOut()
+    await testHeaderTransitionsManager.playOut()
     console.log("end !")
   }
 
@@ -24,7 +19,7 @@ const App = () => {
     <div className="App">
       <button onClick={clickPlayIn}>play-in</button>
       <button onClick={clickPlayOut}>play-out</button>
-      <TestHeader className={"coucou"}/>
+      <TestHeader className={"hello"} />
     </div>
   )
 }

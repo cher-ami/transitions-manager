@@ -9,7 +9,7 @@ import { TransitionsManager, TMountState, TPlayState } from "./TransitionsManage
 export const useIsMount = (manager: TransitionsManager, deps: any[] = []): boolean => {
   const [mount, setMount] = useState<boolean>(false)
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const handler = (event: TMountState): void => {
       if (event === "mount") {
         setMount(true)
@@ -64,7 +64,7 @@ export const usePlayIn = (
   useLayoutEffect(() => {
     const handler = (p: TPlayState): void => {
       if (p !== "play-in") return
-      callback(manager.playInComplete.bind(manager))
+      callback(manager.playInComplete)
     }
     return manager.playStateSignal.on(handler)
   }, deps)
@@ -82,7 +82,7 @@ export const usePlayOut = (
   useLayoutEffect(() => {
     const handler = (p: TPlayState): void => {
       if (p !== "play-out") return
-      callback(manager.playOutComplete.bind(manager))
+      callback(manager.playOutComplete)
     }
     return manager.playStateSignal.on(handler)
   }, deps)

@@ -1,7 +1,7 @@
 import React, { useLayoutEffect, useRef } from "react"
 import { TransitionsManager } from "../src"
 import { usePlayIn, usePlayOut } from "../src"
-import {mountHoc} from "../src/MountHoc"
+import {TransitionsManagerHoc} from "../src/TransitionsManagerHoc"
 import { gsap } from "gsap"
 
 const name = "TestHeader"
@@ -33,12 +33,12 @@ function TestHeader(props: {className?: string}) {
    * Solution 1
    */
 
-  usePlayIn(TestHeaderTransitionsManager, async (done) => {
+  usePlayIn(testHeaderTransitionsManager, async (done) => {
     await tl.current.play()
     done()
   })
 
-  usePlayOut(TestHeaderTransitionsManager, async (done) => {
+  usePlayOut(testHeaderTransitionsManager, async (done) => {
     await tl.current.reverse()
     done()
   })
@@ -72,10 +72,9 @@ function TestHeader(props: {className?: string}) {
 /**
  * Add a transitionsManager instance
  */
-
-export const TestHeaderTransitionsManager = new TransitionsManager({
+export const testHeaderTransitionsManager = new TransitionsManager({
   autoMountUnmount: true,
   name: name,
 })
 
-export default mountHoc(TestHeader, TestHeaderTransitionsManager)
+export default TransitionsManagerHoc(TestHeader, testHeaderTransitionsManager)
