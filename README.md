@@ -182,7 +182,7 @@ import {stagger} from "@cher-ami/transitions-manager"
 
 const [start, clear] = stagger(0.1, [
   HeaderTransitionsManager.playIn,
-  Footer.transitionsManager.playIn,
+  FooterTransitionsManager.playIn,
 ])
 
 // start staggered transition
