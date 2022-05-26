@@ -22,9 +22,9 @@ npm i @cher-ami/transitions-manager
 
 ### PlayIn and playOut
 
-Create a new transitionsManager instance, as static, on a React component.  
-Then, when handle the manager play state with `usePlayIn` and `usePlayOut`
-hooks.
+1. Create a new transitionsManager instance.
+2. Wrap your component by `TransitionsHoc()`
+3. Then, define transitions in `usePlayIn` and `usePlayOut` hooks.
 
 ```tsx
 export const HeaderTransitionsManager = new TransitionsManager()
