@@ -46,9 +46,7 @@ function Header(props: {className?: string}):JSX.Element {
 
   return (
     <header className={props.className} ref={$root}>
-      <div className={"wrapper"}>
         Header
-      </div>
     </header>
   )
 }

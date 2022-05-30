@@ -1,6 +1,6 @@
 import { StateSignal } from "@solid-js/signal"
 import debug from "@wbe/debug"
-import { deferredPromise, TDeferredPromise } from "@wbe/deferred-promise"
+import {deferredPromise, TDeferredPromise} from "./helpers"
 
 const componentName = "TransitionsManager"
 export type TPlayState = "hidden" | "play-out" | "play-in" | "visible"
