@@ -32,13 +32,15 @@ function Header(props: {className?: string}):JSX.Element {
    * Solution 1
    */
 
-  usePlayIn(HeaderTransitionsManager, async (done) => {
+  usePlayIn(HeaderTransitionsManager, async (args, done) => {
     await tl.current.play()
+    log('args playIn', args)
     done()
   })
 
-  usePlayOut(HeaderTransitionsManager, async (done) => {
+  usePlayOut(HeaderTransitionsManager, async (args, done) => {
     await tl.current.reverse()
+    log('args playOut', args)
     done()
   })
 

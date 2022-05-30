@@ -3,11 +3,11 @@ import Header, {HeaderTransitionsManager} from "./Header"
 
 const App = () => {
   const clickPlayIn = async () => {
-    HeaderTransitionsManager.playIn()
+    HeaderTransitionsManager.playIn({duration: 0.5})
   }
 
   const clickPlayOut = async () => {
-    await HeaderTransitionsManager.playOut()
+    await HeaderTransitionsManager.playOut({duration: 1.5})
     console.log("end !")
   }
 

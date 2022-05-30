@@ -36,20 +36,20 @@ export const useIsMount = (manager: TransitionsManager, deps: any[] = []): boole
  */
 export const useTransitionsManager = (
   manager: TransitionsManager,
-  callback: (playState: TPlayState) => void,
+  callback: (args: {[key:string]: any}) => void,
   deps: any[] = []
-): TPlayState => {
-  const [playState, setPlayState] = useState<TPlayState>(manager.playStateSignal.state)
+) => {
+  const [args, setArgs] = useState<{playState:TPlayState}>(manager.playStateSignal.state)
 
   useLayoutEffect(() => {
-    const handler = (p: TPlayState): void => {
-      setPlayState(p)
-      callback(p)
+    const handler = (args): void => {
+      setArgs(args)
+      callback(args)
     }
     return manager.playStateSignal.on(handler)
   }, deps)
 
-  return playState
+  return args
 }
 
 /**
@@ -58,13 +58,13 @@ export const useTransitionsManager = (
  */
 export const usePlayIn = (
   manager: TransitionsManager,
-  callback: (done: () => void) => void,
+  callback: (args: {[key:string]: any}, done: () => void) => void,
   deps: any[] = []
 ): void => {
   useLayoutEffect(() => {
-    const handler = (p: TPlayState): void => {
-      if (p !== "play-in") return
-      callback(manager.playInComplete)
+    const handler = (args): void => {
+      if (args.playState !== "play-in") return
+      callback(args, manager.playInComplete)
     }
     return manager.playStateSignal.on(handler)
   }, deps)
@@ -76,13 +76,13 @@ export const usePlayIn = (
  */
 export const usePlayOut = (
   manager: TransitionsManager,
-  callback: (done: () => void) => void,
+  callback: (args: {[key:string]: any}, done: () => void) => void,
   deps: any[] = []
 ): void => {
   useLayoutEffect(() => {
-    const handler = (p: TPlayState): void => {
-      if (p !== "play-out") return
-      callback(manager.playOutComplete)
+    const handler = (args): void => {
+      if (args.playState !== "play-out") return
+      callback(args, manager.playOutComplete)
     }
     return manager.playStateSignal.on(handler)
   }, deps)
