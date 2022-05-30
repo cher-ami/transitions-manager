@@ -44,7 +44,7 @@ beforeEach(() => {
   /**
    * Header
    */
-  Header = TransitionsHoc((props: { className?: string, transitionDuration: number }): JSX.Element => {
+  Header = TransitionsHoc((props: { className?: string, transitionDuration?: number }): JSX.Element => {
     usePlayIn(TestTransitionsManager, async (done) => {
       mockUsePlayIn()
       // transition simulation
@@ -85,9 +85,10 @@ describe("Transitions Manager", () => {
     // for this test, we need to force de mount complete method
     // witch should be trigger by useIsMount() hook
     TestTransitionsManager.mountComplete()
+    
     expect(TestTransitionsManager.mountStateSignal.state).toBe("mount")
-    // because render hack
-    await waiting(11)
+    // because render hack // FIXME 
+    await waiting(12)
     expect(TestTransitionsManager.playStateSignal.state).toBe("play-in")
     // play in complete method should change play state to visible
     TestTransitionsManager.playInComplete()
