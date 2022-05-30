@@ -1,13 +1,13 @@
-import React, { useLayoutEffect, useRef } from "react"
-import { TransitionsManager } from "../src/TransitionsManager"
+import React, { useLayoutEffect, useRef} from "react"
+import {TransitionsManager, usePlayIn, usePlayOut} from "../src"
+import {TransitionsHoc} from "../src"
 import { gsap } from "gsap"
-const name = "TestFooter"
 
+const name = "TestHeader"
 import debug from "@wbe/debug"
-import { usePlayIn, usePlayOut } from "../src/transitionsManagerHooks"
 const log = debug(`front:${name}`)
 
-function TestFooter() {
+function Header(props: {className?: string}):JSX.Element {
   const $root = useRef(null)
 
   // --------------------------––--------------------------–– INIT TIMELINE
@@ -18,7 +18,7 @@ function TestFooter() {
   const initTl = (): gsap.core.Timeline =>
     gsap.timeline({ paused: true }).fromTo(
       $root.current,
-      { autoAlpha: 0,  y: 20 },
+      { autoAlpha: 0.3,  y: 20 },
       { autoAlpha: 1, y: 0 }
     )
 
@@ -32,12 +32,12 @@ function TestFooter() {
    * Solution 1
    */
 
-  usePlayIn(TestFooter.transitionsManager, async (done) => {
+  usePlayIn(HeaderTransitionsManager, async (done) => {
     await tl.current.play()
     done()
   })
 
-  usePlayOut(TestFooter.transitionsManager, async (done) => {
+  usePlayOut(HeaderTransitionsManager, async (done) => {
     await tl.current.reverse()
     done()
   })
@@ -45,19 +45,12 @@ function TestFooter() {
   // --------------------------––--------------------------–– RENDER
 
   return (
-    <div ref={$root} className={name}>
-      Footer
-    </div>
+    <header className={props.className} ref={$root}>
+        Header
+    </header>
   )
 }
 
-/**
- * Add a transitionsManager instance as static on the component
- */
+export const HeaderTransitionsManager = new TransitionsManager()
 
-TestFooter.transitionsManager = new TransitionsManager({
-  autoMountUnmount: true,
-  name: name,
-})
-
-export default TestFooter
+export default TransitionsHoc(Header, HeaderTransitionsManager)

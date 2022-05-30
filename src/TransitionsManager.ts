@@ -1,22 +1,23 @@
 import { StateSignal } from "@solid-js/signal"
 import debug from "@wbe/debug"
-import { deferredPromise, TDeferredPromise } from "@wbe/deferred-promise"
+import {deferredPromise, TDeferredPromise} from "./helpers"
 
 const componentName = "TransitionsManager"
 export type TPlayState = "hidden" | "play-out" | "play-in" | "visible"
 export type TMountState = "mount" | "unmount"
 
-type TContructor = {
-  autoMountUnmount?: boolean
-  name?: string
-}
-
+/**
+ * TransitionsManager
+ */
 export class TransitionsManager {
-  protected autoMountUnmount: boolean
-  protected name: string
+  public autoMountUnmount: boolean
+  public name: string
   protected log
 
-  constructor({ autoMountUnmount = false, name = null }: TContructor) {
+  constructor({ autoMountUnmount = true, name = null }: {
+    autoMountUnmount?: boolean
+    name?: string
+  } = {}) {
     this.autoMountUnmount = autoMountUnmount
     this.name = name
     this.log = debug(
@@ -46,7 +47,7 @@ export class TransitionsManager {
   }
 
   public mountComplete(): void {
-    this.log("mount Complete")
+    this.log("mount Complete", this.mountDeferred)
     this.mountDeferred.resolve()
   }
 
@@ -85,7 +86,7 @@ export class TransitionsManager {
     return this.playInDeferred.promise
   }
 
-  public playInComplete(): void {
+  public playInComplete = (): void => {
     this.log("playIn Complete")
     this.playStateSignal.dispatch("visible")
     this.playInDeferred?.resolve()
@@ -98,7 +99,7 @@ export class TransitionsManager {
     return this.playOutDeferred.promise
   }
 
-  public playOutComplete(): void {
+  public playOutComplete = (): void => {
     this.log("playOut Complete")
     this.playStateSignal.dispatch("hidden")
     this.playOutDeferred?.resolve()

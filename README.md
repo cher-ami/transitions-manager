@@ -22,103 +22,114 @@ npm i @cher-ami/transitions-manager
 
 ### PlayIn and playOut
 
-Create a new transitionsManager instance, as static, on a React component.  
-Then, when handle the manager play state with `usePlayIn` and `usePlayOut` hooks.
+1. Create a new transitionsManager instance.
+2. Wrap your component by `TransitionsHoc()`
+3. Then, define transitions in `usePlayIn` and `usePlayOut` hooks.
 
-```ts
-Header.transitionsManager = new TransitionsManager()
+```tsx
+export const HeaderTransitionsManager = new TransitionsManager()
 
 function Header() {
 
-  usePlayIn(Header.transitionsManager, async (done) => {
+  usePlayIn(HeaderTransitionsManager, async (done) => {
     await myPlayIn()
     done()
   })
 
-  usePlayOut(Header.transitionsManager, async (done) => {
+  usePlayOut(HeaderTransitionsManager, async (done) => {
     await myPlayOut()
     done()
   })
 
-  return ...
+  return <header>...</header>
 }
+
+export default TransitionsHoc(Header, HeaderTransitionsManager)
 ```
 
-Now, from anywhere in the application, you can play the component via his own transitionsManager instance.
+Now, from anywhere in the application, you can play the component via his own
+transitionsManager instance.
 
 ```js
-await Header.transitionsManager.playIn()
+await HeaderTransitionsManager.playIn()
 // now, the transtion is done.
 ```
 
-`Header.transitionsManager.playIn()` will exectute the transition function of `usePlayIn` hook defined previously in Header component.
-This method return a promise that will be resolved when the transition is done with `done()` function from the same hook.
-Of course, "awaiting" the promise is not mandatory.
+`HeaderTransitionsManager.playIn()` will exectute the transition function
+of `usePlayIn` hook defined previously in Header component. This method return a
+promise that will be resolved when the transition is done with `done()` function
+from the same hook. Of course, "awaiting" the promise is not mandatory.
+
+The `TransitionsHoc` function will mount and unmount automatically the component
+before play out and after play out. It's possible to only play in and play out
+without destroy the component with `autoMountUnmount` option:
+
+```ts
+new TransitionsManager({autoMountUnmount: false})
+```
 
 ### useTransitionsManager
 
-Instead of handle the transitionsManager play state with `usePlayIn` and `usePlayOut` hooks,
-you can use the `useTransitionsManager` hook in your component.
+Instead of handle the transitionsManager play state with `usePlayIn`
+and `usePlayOut` hooks, you can use the `useTransitionsManager` hook in your
+component.
 
-This one returns the current play state of the transitionsManager instance when it changes.
-In this case, you have to execute the `playInComplete` and `playOutComplete` functions when the transition is done.
+This one returns the current play state of the transitionsManager instance when
+it changes. In this case, you have to execute the `playInComplete`
+and `playOutComplete` functions when the transition is done.
 
 ```ts
-useTransitionsManager(Header.transitionsManager, async (playState) => {
+useTransitionsManager(HeaderTransitionsManager, async (playState) => {
   if (playState === "play-in") {
     await myPlayIn()
-    Header.transitionsManager.playInComplete()
+    HeaderTransitionsManager.playInComplete()
   }
   if (playState === "play-out") {
     await myPlayOut()
-    Header.transitionsManager.playOutComplete()
+    HeaderTransitionsManager.playOutComplete()
   }
 })
 ```
 
-### Mount and unmount
+### Mount and unmount manually (old API)
 
-At this point, the component is eable to be play-in and play-out by his own transitionsManager instance from anywhere in the application.
-It's also possible to mount and unmount before and play-in and after play-out.
+If `TransitionsHoc` wrapper is not used, the mount and unmount component state
+can be managed manually. By using `useIsMount` hook from the parent component,
+you can check the mount and unmount boolean state to condition the rendering.
 
-By using `useIsMount` hook from the parent component, you can check the mount and unmount boolean state to condition the rendering.
-
-```ts
+```tsx
 const App = () => {
-  const mountHeader = useIsMount(Header.transitionsManager)
-  return <div>{mountHeader && <Header />}</div>
+  const mountHeader = useIsMount(HeaderTransitionsManager)
+  return <div>{mountHeader && <Header/>}</div>
 }
 ```
 
 Now, you can mount and unmount the component.
 
+`playIn` method will call `mount` methods before is execution, and `playOut`
+will call `unmount` methods after is execution automatically.
+
 ```ts
-await Header.transitionsManager.mount()
-await Header.transitionsManager.playIn()
+await HeaderTransitionsManager.playIn() // auto mount + playIn
 // ...
-await Header.transitionsManager.playOut()
-await Header.transitionsManager.unmount()
+await HeaderTransitionsManager.playOut() // playOut + auto unmount
 ```
 
-Writting all the process is a bit long, but you can use the manager in a more simple way.
-If you don't want to specify each time `mount` and `unmount` methods, you can pass `autoMountUnmount` param to `true` in the constructor.
+If the `autoMountUnmount` option is disable, you will have to mount and unmount
+manually the component as below:
 
 ```ts
-Header.transitionsManager = new TransitionsManager({ autoMountUnmount: true })
-```
-
-`playIn` method will call `mount` methods before is execution, and `playOut` will call `unmount` methods after is execution automatically.
-With `autoMountUnmount`, it will get the same result as in the previous example with that code:
-
-```ts
-await Header.transitionsManager.playIn() // auto mount + playIn
+await HeaderTransitionsManager.mount()
+await HeaderTransitionsManager.playIn()
 // ...
-await Header.transitionsManager.playOut() // playOut + auto unmount
+await HeaderTransitionsManager.playOut()
+await HeaderTransitionsManager.unmount()
 ```
 
 ## debugging
 
-[@wbe/debug](https://github.com/willybrauner/debug) is used on this project. It allows to easily get logs informations on development and production modes.
+[@wbe/debug](https://github.com/willybrauner/debug) is used on this project. It
+allows to easily get logs informations on development and production modes.
 
 - To use it, add this line in your browser console:
 
@@ -126,10 +137,11 @@ await Header.transitionsManager.playOut() // playOut + auto unmount
 localStorage.debug = "TransitionsManager:*"
 ```
 
-- Optionally, pass a name parameter to the instance to print it in the debug namespace.
+- Optionally, pass a name parameter to the instance to print it in the debug
+  namespace.
 
 ```ts
-Header.transitionsManager = new TransitionsManager({ name: "Header" })
+HeaderTransitionsManager = new TransitionsManager({name: "Header"})
 ```
 
 ## API usage
@@ -158,7 +170,6 @@ Header.transitionsManager = new TransitionsManager({ name: "Header" })
 
 `playOutComplete(): void`
 
-
 ## Utils
 
 **`stagger(delay: number = 1, anims: (()=> any)[]): [promise: () => Promise<any>, cancel: () => void]`**
@@ -170,8 +181,8 @@ Staggered transition can be setted with the util `stagger` function.
 import {stagger} from "@cher-ami/transitions-manager"
 
 const [start, clear] = stagger(0.1, [
-  Header.transitionsManager.playIn,
-  Footer.transitionsManager.playIn,
+  HeaderTransitionsManager.playIn,
+  FooterTransitionsManager.playIn,
 ])
 
 // start staggered transition
@@ -184,7 +195,6 @@ clear()
 <p align="center">
   <img src="/screen-stagger.gif"/>
 </p>
-
 
 ## Example
 
