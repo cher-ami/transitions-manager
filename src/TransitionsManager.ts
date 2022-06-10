@@ -69,7 +69,7 @@ export class TransitionsManager<GOptions = {}> {
 
   // ------------------------------------------------------------------------- PLAYIN / PLAYOUT
 
-  public playIn = async (options?:GOptions): Promise<void> => {
+  public playIn = async (options?: GOptions): Promise<void> => {
     if (this.autoMountUnmount) {
       this.log("> auto mount")
       await this.mount()

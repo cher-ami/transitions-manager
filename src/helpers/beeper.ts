@@ -1,6 +1,5 @@
 type THandler<S, O> = (state?: S, options?: O) => void
 type THandlers<S, O> = (THandler<S, O>|void)[]
-type TOff<S, O> = (handler: THandler<S, O>) => void
 
 /**
  * Beeper
@@ -22,15 +21,15 @@ export function beeper<S = any, O extends Record<string, any> = {}>(initialState
     handlers = handlers.filter((e) => e !== handler)
   }
 
-  const on = (handler: THandler<S, O>): TOff<S, O> => {
+  const on = (handler: THandler<S, O>): (handler?: THandler<S, O>) => void => {
     handlers.push(handler)
     return () => off(handler)
   }
 
-  const dispatch = (state?: S, options?:O): THandlers<S, O> => {
+  const dispatch = (state?: S, options?: O): THandlers<S, O> => {
     currentState = state
     currentOptions = {...currentOptions, ...options}
-    return handlers.map((e:THandler<S, O>) => e(state, currentOptions))
+    return handlers.map((handler:THandler<S, O>) => handler(state, currentOptions))
   }
 
   const reset = (): void => {

@@ -106,6 +106,7 @@ describe("beeper", ()=>
 
   })
 
+
   it("should restore initial state and options when 'reset' method is executed", () => {
 
     const bee = beeper<string, {duration?: number}>("first", {duration: 1})
