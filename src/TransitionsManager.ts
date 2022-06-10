@@ -1,6 +1,6 @@
-import { StateSignal } from "@solid-js/signal"
 import debug from "@wbe/debug"
-import {deferredPromise, TDeferredPromise} from "./helpers"
+import {deferredPromise, TDeferredPromise} from "./helpers/deferredPromise"
+import {beeper} from "./helpers/beeper"
 
 const componentName = "TransitionsManager"
 export type TPlayState = "hidden" | "play-out" | "play-in" | "visible"
@@ -9,7 +9,7 @@ export type TMountState = "mount" | "unmount"
 /**
  * TransitionsManager
  */
-export class TransitionsManager {
+export class TransitionsManager<GOptions = {}> {
   public autoMountUnmount: boolean
   public name: string
   protected log
@@ -25,11 +25,11 @@ export class TransitionsManager {
     )
   }
 
-  public mountStateSignal = StateSignal<TMountState>("unmount")
+  public mountStateSignal = beeper<TMountState>("unmount")
   protected mountDeferred: TDeferredPromise<void>
   protected unmountDeferred: TDeferredPromise<void>
 
-  public playStateSignal = StateSignal<TPlayState>("hidden")
+  public playStateSignal = beeper<TPlayState, GOptions>("hidden")
   protected playInDeferred: TDeferredPromise<void>
   protected playOutDeferred: TDeferredPromise<void>
 
@@ -69,7 +69,7 @@ export class TransitionsManager {
 
   // ------------------------------------------------------------------------- PLAYIN / PLAYOUT
 
-  public playIn = async (): Promise<void> => {
+  public playIn = async (options?:GOptions): Promise<void> => {
     if (this.autoMountUnmount) {
       this.log("> auto mount")
       await this.mount()
@@ -79,7 +79,7 @@ export class TransitionsManager {
     await new Promise((resolve:any) => {
       setTimeout(()=> {
         this.log("playIn (with 10ms delay)")
-        this.playStateSignal.dispatch("play-in")
+        this.playStateSignal.dispatch("play-in", options)
         resolve()
       }, 10)
     })
@@ -92,10 +92,10 @@ export class TransitionsManager {
     this.playInDeferred?.resolve()
   }
 
-  public playOut = async (): Promise<void> => {
+  public playOut = async (options?:GOptions): Promise<void> => {
     this.log("playOut")
     this.playOutDeferred = deferredPromise<void>()
-    this.playStateSignal.dispatch("play-out")
+    this.playStateSignal.dispatch("play-out", options)
     return this.playOutDeferred.promise
   }
 
