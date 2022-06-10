@@ -30,8 +30,7 @@ export function beeper<S = any, O extends Record<string, any> = {}>(initialState
   const dispatch = (state?: S, options?:O): THandlers<S, O> => {
     currentState = state
     currentOptions = {...currentOptions, ...options}
-    console.log('currentOptions',currentOptions)
-    return handlers.map((e:THandler<S, O>) => e(state))
+    return handlers.map((e:THandler<S, O>) => e(state, currentOptions))
   }
 
   const reset = (): void => {
@@ -47,5 +46,6 @@ export function beeper<S = any, O extends Record<string, any> = {}>(initialState
     reset,
     get state() { return currentState },
     get options() { return currentOptions },
+    get handlers() { return handlers },
   }
 }

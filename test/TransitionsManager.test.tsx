@@ -4,6 +4,9 @@ import {TransitionsManager, usePlayIn, usePlayOut} from "../src"
 import {TransitionsHoc} from "../src"
 const {log} = console
 
+
+// ----------------------------------------------------------------------------- PREPARE
+
 const waiting = ((time: number): Promise<void> => new Promise((resolve) => setTimeout(resolve, time)))
 
 const mockUsePlayIn = jest.fn()
@@ -64,11 +67,12 @@ beforeEach(() => {
 
 })
 
-// -----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------- TEST
 
 describe("Transitions Manager", () => {
 
-  it("should respect mount and unmount properly", async () => {
+  it("should respect mount and unmount properly", async () =>
+  {
     expect(TestTransitionsManager.mountStateSignal.state).toBe("unmount")
     TestTransitionsManager.mount()
     expect(TestTransitionsManager.mountStateSignal.state).toBe("mount")
@@ -76,7 +80,8 @@ describe("Transitions Manager", () => {
     expect(TestTransitionsManager.mountStateSignal.state).toBe("unmount")
   })
 
-  it("should mount automatically when playIn", async () => {
+  it("should mount automatically when playIn", async () =>
+  {
     expect(TestTransitionsManager.mountStateSignal.state).toBe("unmount")
     expect(TestTransitionsManager.playStateSignal.state).toBe("hidden")
     // start playIn
@@ -85,9 +90,9 @@ describe("Transitions Manager", () => {
     // for this test, we need to force de mount complete method
     // witch should be trigger by useIsMount() hook
     TestTransitionsManager.mountComplete()
-    
+
     expect(TestTransitionsManager.mountStateSignal.state).toBe("mount")
-    // because render hack // FIXME 
+    // because render hack // FIXME
     await waiting(12)
     expect(TestTransitionsManager.playStateSignal.state).toBe("play-in")
     // play in complete method should change play state to visible
@@ -95,7 +100,9 @@ describe("Transitions Manager", () => {
     expect(TestTransitionsManager.playStateSignal.state).toBe("visible")
   })
 
-  it("should respect state cycle using component", async () => {
+
+  it("should respect state cycle using component", async () =>
+  {
     const transitionDuration = 200
     const wrapper = render(<App transitionDuration={transitionDuration}/>)
     const playInButton = wrapper.getByTestId("play-in")
@@ -147,6 +154,5 @@ describe("Transitions Manager", () => {
     })
 
   })
-
 
 })
