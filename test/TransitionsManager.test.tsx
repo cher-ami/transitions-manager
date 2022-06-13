@@ -82,29 +82,15 @@ describe("Transitions Manager", () => {
   })
 
   it("should mount automatically when playIn", async () => {
-
     expect(TestTransitionsManager.mountStateSignal.state).toBe("unmount")
     expect(TestTransitionsManager.playStateSignal.state).toBe("hidden")
 
-    await act(async () => {
-
       // start playIn
+    await act(async () => {
       TestTransitionsManager.playIn()
-      // tricky, the playin method auto dispatch mount and wait for promise is complete
-      // for this test, we need to force de mount complete method
-      // witch should be trigger by useIsMount() hook
-      TestTransitionsManager.mountComplete()
-
       expect(TestTransitionsManager.mountStateSignal.state).toBe("mount")
-      // because render hack // FIXME
-      await waiting(12)
-      expect(TestTransitionsManager.playStateSignal.state).toBe("play-in")
-      // play in complete method should change play state to visible
-      TestTransitionsManager.playInComplete()
-      expect(TestTransitionsManager.playStateSignal.state).toBe("visible")
     })
   })
-
 
   it("should respect state cycle using component", async () => {
     const transitionDuration = 200
@@ -125,22 +111,25 @@ describe("Transitions Manager", () => {
       playInButton.click()
 
     })
-    expect(TestTransitionsManager.mountStateSignal.state).toBe("mount")
 
+    // is mount
+    expect(TestTransitionsManager.mountStateSignal.state).toBe("mount")
     expect(wrapper.getByTestId("header")).toBeDefined()
 
-    // but he is already hidden
-    expect(TestTransitionsManager.playStateSignal.state).toBe("hidden")
     // because hack render 10ms...
     await waiting(12)
+
     // now he change to play in state
     expect(TestTransitionsManager.playStateSignal.state).toBe("play-in")
     expect(mockUsePlayIn).toHaveBeenCalledTimes(1)
+
     // waiting for transitions end
     await waiting(transitionDuration)
+
     // after transition "done()" function update state to visible
     expect(TestTransitionsManager.playStateSignal.state).toBe("visible")
     expect(mockUsePlayInComplete).toHaveBeenCalledTimes(1)
+
     /**
      * playOut + unmount
      */

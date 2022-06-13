@@ -31,7 +31,7 @@ export class TransitionsManager<GOptions = {}> {
   } = {}) {
     this.autoMountUnmount = autoMountUnmount
     this.name = name
-    this.log = debug([componentName, this.name != null && `:${this.name}`].filter((e) => e).join(""))
+    this.log = debug([componentName, this.name != null && `:${this.name}`].filter((e) => e).join(""));
     this.options = options
     this.mountStateSignal = beeper<TMountState>("unmount")
     this.playStateSignal = beeper<TPlayState, GOptions>("hidden", this.options)
