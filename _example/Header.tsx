@@ -33,7 +33,7 @@ function Header(props: {className?: string}):JSX.Element {
    */
 
   usePlayIn(HeaderTransitionsManager, async (done, options) => {
-    log('playin options',options)
+    log('playin options',options.)
     await tl.current.play()
     done()
   })
