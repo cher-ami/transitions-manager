@@ -27,16 +27,16 @@ npm i @cher-ami/transitions-manager
 3. Then, define transitions in `usePlayIn` and `usePlayOut` hooks.
 
 ```tsx
-export const HeaderTransitionsManager = new TransitionsManager()
+export const headerTransitionsManager = new TransitionsManager()
 
 function Header() {
 
-  usePlayIn(HeaderTransitionsManager, async (done) => {
+  usePlayIn(headerTransitionsManager, async (done, options) => {
     await myPlayIn()
     done()
   })
 
-  usePlayOut(HeaderTransitionsManager, async (done) => {
+  usePlayOut(headerTransitionsManager, async (done, options) => {
     await myPlayOut()
     done()
   })
@@ -44,18 +44,18 @@ function Header() {
   return <header>...</header>
 }
 
-export default TransitionsHoc(Header, HeaderTransitionsManager)
+export default TransitionsHoc(Header, headerTransitionsManager)
 ```
 
 Now, from anywhere in the application, you can play the component via his own
 transitionsManager instance.
 
 ```js
-await HeaderTransitionsManager.playIn()
+await headerTransitionsManager.playIn()
 // now, the transtion is done.
 ```
 
-`HeaderTransitionsManager.playIn()` will exectute the transition function
+`headerTransitionsManager.playIn()` will execute the transition function
 of `usePlayIn` hook defined previously in Header component. This method return a
 promise that will be resolved when the transition is done with `done()` function
 from the same hook. Of course, "awaiting" the promise is not mandatory.
@@ -65,7 +65,44 @@ before play out and after play out. It's possible to only play in and play out
 without destroy the component with `autoMountUnmount` option:
 
 ```ts
-new TransitionsManager({autoMountUnmount: false})
+const headerTransitionsManager = new TransitionsManager({ autoMountUnmount: false })
+```
+
+### playIn and playOut with options parameters 
+
+`playIn` and `playOut` methods accept options parameters witch can be dispatch
+with playState.
+
+From anywhere:
+```ts
+headerTransitionsManager.playIn({ duration: 0 })
+```
+
+From the components:
+```tsx
+  usePlayIn(headerTransitionsManager, async (done, options) => {
+    // do something with options duration
+    console.log(options.duration)
+    done()
+  })
+```
+
+Default options can be set on the manager instance:
+```ts
+const headerTransitionsManager = new TransitionsManager({ 
+  options: {
+    duration: 1
+  } 
+})
+```
+
+For typescript developers:
+```ts
+const headerTransitionsManager = new TransitionsManager<{duration?: number}>({ 
+  options: {
+    duration: 1
+  } 
+})
 ```
 
 ### useTransitionsManager
@@ -78,17 +115,21 @@ This one returns the current play state of the transitionsManager instance when
 it changes. In this case, you have to execute the `playInComplete`
 and `playOutComplete` functions when the transition is done.
 
-```ts
-useTransitionsManager(HeaderTransitionsManager, async (playState) => {
+```tsx
+useTransitionsManager(headerTransitionsManager, async (playState, options) => {
   if (playState === "play-in") {
     await myPlayIn()
-    HeaderTransitionsManager.playInComplete()
+    headerTransitionsManager.playInComplete()
   }
   if (playState === "play-out") {
     await myPlayOut()
-    HeaderTransitionsManager.playOutComplete()
+    headerTransitionsManager.playOutComplete()
   }
 })
+
+// or get state from useTransitionsManager hook
+const {playState, options} = useTransitionsManager(headerTransitionsManager)
+// ...
 ```
 
 ### Mount and unmount manually (old API)
@@ -99,7 +140,7 @@ you can check the mount and unmount boolean state to condition the rendering.
 
 ```tsx
 const App = () => {
-  const mountHeader = useIsMount(HeaderTransitionsManager)
+  const mountHeader = useIsMount(headerTransitionsManager)
   return <div>{mountHeader && <Header/>}</div>
 }
 ```
@@ -110,20 +151,20 @@ Now, you can mount and unmount the component.
 will call `unmount` methods after is execution automatically.
 
 ```ts
-await HeaderTransitionsManager.playIn() // auto mount + playIn
+await headerTransitionsManager.playIn() // auto mount + playIn
 // ...
-await HeaderTransitionsManager.playOut() // playOut + auto unmount
+await headerTransitionsManager.playOut() // playOut + auto unmount
 ```
 
 If the `autoMountUnmount` option is disable, you will have to mount and unmount
 manually the component as below:
 
 ```ts
-await HeaderTransitionsManager.mount()
-await HeaderTransitionsManager.playIn()
+await headerTransitionsManager.mount()
+await headerTransitionsManager.playIn()
 // ...
-await HeaderTransitionsManager.playOut()
-await HeaderTransitionsManager.unmount()
+await headerTransitionsManager.playOut()
+await headerTransitionsManager.unmount()
 ```
 
 ## debugging
@@ -141,7 +182,7 @@ localStorage.debug = "TransitionsManager:*"
   namespace.
 
 ```ts
-HeaderTransitionsManager = new TransitionsManager({name: "Header"})
+const headerTransitionsManager = new TransitionsManager({name: "Header"})
 ```
 
 ## API usage
@@ -160,13 +201,13 @@ HeaderTransitionsManager = new TransitionsManager({name: "Header"})
 
 ### PlayIn
 
-`playIn(): Promise<void>`
+`playIn(options?: Partials<string, any>): Promise<void>`
 
 `playInComplete(): void`
 
 ### PlayOut
 
-`playOut(): Promise<void>`
+`playOut(options?: Partials<string, any>): Promise<void>`
 
 `playOutComplete(): void`
 
@@ -181,7 +222,7 @@ Staggered transition can be setted with the util `stagger` function.
 import {stagger} from "@cher-ami/transitions-manager"
 
 const [start, clear] = stagger(0.1, [
-  HeaderTransitionsManager.playIn,
+  headerTransitionsManager.playIn,
   FooterTransitionsManager.playIn,
 ])
 

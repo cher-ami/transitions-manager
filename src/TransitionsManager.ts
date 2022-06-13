@@ -9,7 +9,7 @@ export type TMountState = "mount" | "unmount"
 /**
  * TransitionsManager
  */
-export class TransitionsManager<GOptions = {}> {
+export class TransitionsManager<GOptions = {}>{
   public autoMountUnmount: boolean
   public name: string
   protected options: Record<any, any>

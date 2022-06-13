@@ -1,14 +1,14 @@
 import React from "react"
 // @ts-ignore
-import Header, {HeaderTransitionsManager} from "./Header"
+import Header, {headerTransitionsManager} from "./Header"
 
 const App = () => {
   const clickPlayIn = async () => {
-    HeaderTransitionsManager.playIn({duration: 2})
+    headerTransitionsManager.playIn({duration: 2})
   }
 
   const clickPlayOut = async () => {
-    await HeaderTransitionsManager.playOut({duration: 1})
+    await headerTransitionsManager.playOut({duration: 1})
     console.log("end !")
   }
 

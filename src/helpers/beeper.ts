@@ -4,7 +4,7 @@ type THandlers<S, O> = (THandler<S, O>|void)[]
 /**
  * Beeper
  * A simple Emitter witch can dispatch state and option object
- * Inspire by solid-js/signal
+ * Inspired by solid-js/signal https://www.npmjs.com/package/@solid-js/signal
  * @param initialState
  * @param initialOptions
  */
