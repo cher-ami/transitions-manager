@@ -12,26 +12,31 @@ export type TMountState = "mount" | "unmount"
 export class TransitionsManager<GOptions = {}> {
   public autoMountUnmount: boolean
   public name: string
-  protected log
+  protected options: Record<any, any>
 
-  constructor({ autoMountUnmount = true, name = null }: {
-    autoMountUnmount?: boolean
-    name?: string
-  } = {}) {
-    this.autoMountUnmount = autoMountUnmount
-    this.name = name
-    this.log = debug(
-      [componentName, this.name != null && `:${this.name}`].filter((e) => e).join("")
-    )
-  }
-
-  public mountStateSignal = beeper<TMountState>("unmount")
+  public mountStateSignal
   protected mountDeferred: TDeferredPromise<void>
   protected unmountDeferred: TDeferredPromise<void>
 
-  public playStateSignal = beeper<TPlayState, GOptions>("hidden")
+  public playStateSignal
   protected playInDeferred: TDeferredPromise<void>
   protected playOutDeferred: TDeferredPromise<void>
+
+  private readonly log
+
+  constructor({ autoMountUnmount = true, name = null, options = {} }: {
+    autoMountUnmount?: boolean
+    name?: string
+    options?: Record<any, any>
+  } = {}) {
+    this.autoMountUnmount = autoMountUnmount
+    this.name = name
+    this.log = debug([componentName, this.name != null && `:${this.name}`].filter((e) => e).join(""))
+    this.options = options
+    this.mountStateSignal = beeper<TMountState>("unmount")
+    this.playStateSignal = beeper<TPlayState, GOptions>("hidden", this.options)
+  }
+
 
   // ------------------------------------------------------------------------- MOUNT / UNMOUNT
 
