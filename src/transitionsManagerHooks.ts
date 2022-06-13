@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState } from "react"
+import {useLayoutEffect, useState} from "react"
 import { TransitionsManager, TMountState, TPlayState } from "./TransitionsManager"
 
 /**
@@ -34,37 +34,39 @@ export const useIsMount = (manager: TransitionsManager, deps: any[] = []): boole
  * @param deps
  * @returns
  */
-export const useTransitionsManager = (
+export const useTransitionsManager = <GOptions = {}>(
   manager: TransitionsManager,
-  callback: (playState: TPlayState) => void,
+  callback: (playState: TPlayState, options: GOptions) => void,
   deps: any[] = []
-): TPlayState => {
+): { playState: TPlayState, options: GOptions } => {
   const [playState, setPlayState] = useState<TPlayState>(manager.playStateSignal.state)
+  const [options, setOptions] = useState<GOptions>(manager.playStateSignal.options)
 
   useLayoutEffect(() => {
-    const handler = (p: TPlayState): void => {
+    const handler = (p: TPlayState, o: GOptions): void => {
       setPlayState(p)
-      callback(p)
+      setOptions(o)
+      callback(p, o)
     }
     return manager.playStateSignal.on(handler)
   }, deps)
 
-  return playState
+  return {playState, options}
 }
 
 /**
  * usePlayIn
  * Execute callback when playState is "play-in" state
  */
-export const usePlayIn = (
-  manager: TransitionsManager,
-  callback: (done: () => void) => void,
+export const usePlayIn = <GOptions = {}>(
+  manager: TransitionsManager<GOptions>,
+  callback: (done: () => void, options: GOptions) => void,
   deps: any[] = []
 ): void => {
   useLayoutEffect(() => {
-    const handler = (p: TPlayState): void => {
+    const handler = (p: TPlayState, options: GOptions): void => {
       if (p !== "play-in") return
-      callback(manager.playInComplete)
+      callback(manager.playInComplete, options)
     }
     return manager.playStateSignal.on(handler)
   }, deps)
@@ -74,15 +76,15 @@ export const usePlayIn = (
  * usePlayOut
  * Execute callback when playState is "play-out" state
  */
-export const usePlayOut = (
-  manager: TransitionsManager,
-  callback: (done: () => void) => void,
+export const usePlayOut = <GOptions = {}>(
+  manager: TransitionsManager<GOptions>,
+  callback: (done: () => void, options:GOptions) => void,
   deps: any[] = []
 ): void => {
   useLayoutEffect(() => {
-    const handler = (p: TPlayState): void => {
+    const handler = (p: TPlayState, options: GOptions): void => {
       if (p !== "play-out") return
-      callback(manager.playOutComplete)
+      callback(manager.playOutComplete, options)
     }
     return manager.playStateSignal.on(handler)
   }, deps)
