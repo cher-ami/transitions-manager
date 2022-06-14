@@ -12,51 +12,170 @@ Transitions manager allows to handle and dispatch transition states from anywher
 <img alt="demo" src="/screen.gif"/>
 </p>
 
-## Installation
+## Summary
+
+- [Installation](#Installation)
+- [Life cycle](#LifeCycle)
+- [Vanilla usage](#VanillaUsage)
+- [React usage](#ReactUsage)
+  - [usePlayIn & useLayout](#UsePlayInAndUsePlayOut)
+  - [useTransitionsManager](#UseTransitionsManager)
+  - [mount & unmount manually](#MountUnumountManually)
+- [debug](#Debug)
+- [Api](#API)
+- [Utils](#Utils)
+- [Example](#Example)
+
+## <a name="Installation"></a>Installation
 
 ```
 npm i @cher-ami/transitions-manager
 ```
 
-## Usage
+## <a name="LifeCycle"></a>Life cycle
 
-### PlayIn and playOut
+`TransitionsManager` allows to handle and dispatch two types of states:
 
-1. Create a new transitionsManager instance.
-2. Wrap your component by `TransitionsHoc()`
-3. Then, define transitions in `usePlayIn` and `usePlayOut` hooks.
+- mountState `mount | unmount`
+- playState `hidden | play-in | visible | play-out`
+
+The life cycle of a single transition order could be:
+
+- `mount` (mountState)
+- `play-in` (playState)
+- `visible` (playState)
+- `play-out` (playState)
+- `hidden` (playState) - default
+- `unmount` (mountState) - default
+
+It's possible to managing a transitions without using the mountState and only working with playState. The mountState is useful specificaly about the React usage.
+
+## <a name="VanillaUsage"></a>Vanilla usage
+
+Create a new instance to manager the transitions of your component:
+```ts
+export const componentTransitionsManager = new TransitionsManager()
+```
+
+Listen `mountState` change:
+```ts
+const handleMountState = (mountState) => {
+  if (mountState === "mount") {
+    // do somthing and resolve mountState
+    componentTransitionsManager.mountComplete()
+  }
+  if (mountState === "unmount") {
+    // do somthing and resolve mountState
+    componentTransitionsManager.unmountComplete()
+  }
+}
+// start to listen
+componentTransitionsManager.mountStateSignal.on(handleMountState)
+// stop...
+componentTransitionsManager.mountStateSignal.off(handleMountState)
+```
+
+Listen `playState` change on the same way:
+```ts
+const handlePlayState = (playState) => {
+  if (playState === "play-in") {
+    // do something and resolve transition state
+    componentTransitionsManager.playInComplete()
+  }
+  if (playState === "play-out") {
+    // do something and resolve transition state
+    componentTransitionsManager.playOutComplete()
+  }
+}
+// start to listen
+componentTransitionsManager.playStateSignal.on(handlePlayState)
+// stop...
+componentTransitionsManager.playStateSignal.off(handlePlayState)
+```
+
+Now from anywhere, dispatch a new transition state with these methods
+
+````shell
+componentTransitionsManager.mount()
+componentTransitionsManager.playIn()
+componentTransitionsManager.playOut()
+componentTransitionsManager.unmount()
+````
+
+### <a name="OptionsParameters"></a>Options parameters
+
+`playIn` and `playOut` methods accept options parameters.
+
+```ts
+componentTransitionsManager.playIn({ duration: 0 })
+```
+
+From the components:
+```ts
+componentTransitionsManager.playStateSignal.on((playState, options) => {
+  console.log(options) // { duration: 0 }
+})
+```
+
+Default options can be set on the manager instance:
+```ts
+const componentTransitionsManager = new TransitionsManager({ 
+  options: {
+    duration: 1
+  } 
+})
+```
+
+For typescript developers, GOption generic type is available on instance
+```ts
+const componentTransitionsManager = new TransitionsManager<{duration?: number}>({ 
+  options: {
+    duration: 1
+  } 
+})
+```
+
+## <a name="ReactUsage"></a>React usage
+
+`TransitionsManager` is ready to use with vanilla javascript as above but it has been built for a React usage too. The API comes with hooks!
+
+### <a name="UsePlayInAndUsePlayOut"></a>usePlayIn & usePlayOut
+
+1. Create a new transitionsManager instance as above
+2. Wrap your component by `TransitionsHoc(component, manager)`
+3. Then, define transitions in `usePlayIn` and `usePlayOut` hooks callback.
+
+
+````ts
+export const componentTransitionsManager = new TransitionsManager()
+````
 
 ```tsx
-export const headerTransitionsManager = new TransitionsManager()
-
-function Header() {
-
-  usePlayIn(headerTransitionsManager, async (done, options) => {
+function Component() {
+  usePlayIn(componentTransitionsManager, async (done, options) => {
     await myPlayIn()
     done()
   })
-
-  usePlayOut(headerTransitionsManager, async (done, options) => {
+  usePlayOut(componentTransitionsManager, async (done, options) => {
     await myPlayOut()
     done()
   })
-
-  return <header>...</header>
+  return <div>...</div>
 }
 
-export default TransitionsHoc(Header, headerTransitionsManager)
+export default TransitionsHoc(Component, componentTransitionsManager)
 ```
 
-Now, from anywhere in the application, you can play the component via his own
-transitionsManager instance.
+Now, from anywhere in the application, you can play the component via `componentTransitionsManager` his own transitionsManager instance.
 
 ```js
-await headerTransitionsManager.playIn()
+await componentTransitionsManager.playIn()
 // now, the transtion is done.
 ```
 
-`headerTransitionsManager.playIn()` will execute the transition function
-of `usePlayIn` hook defined previously in Header component. This method return a
+
+`componentTransitionsManager.playIn()` will execute the transition function
+of `usePlayIn` hook defined previously in Component. This method returns a
 promise that will be resolved when the transition is done with `done()` function
 from the same hook. Of course, "awaiting" the promise is not mandatory.
 
@@ -65,74 +184,37 @@ before play out and after play out. It's possible to only play in and play out
 without destroy the component with `autoMountUnmount` option:
 
 ```ts
-const headerTransitionsManager = new TransitionsManager({ autoMountUnmount: false })
+const componentTransitionsManager = new TransitionsManager({ autoMountUnmount: false })
 ```
 
-### playIn and playOut with options parameters 
+### <a name="UseTransitionsManager"></a>useTransitionsManager
 
-`playIn` and `playOut` methods accept options parameters witch can be dispatch
-with playState.
-
-From anywhere:
-```ts
-headerTransitionsManager.playIn({ duration: 0 })
-```
-
-From the components:
-```tsx
-  usePlayIn(headerTransitionsManager, async (done, options) => {
-    // do something with options duration
-    console.log(options.duration)
-    done()
-  })
-```
-
-Default options can be set on the manager instance:
-```ts
-const headerTransitionsManager = new TransitionsManager({ 
-  options: {
-    duration: 1
-  } 
-})
-```
-
-For typescript developers:
-```ts
-const headerTransitionsManager = new TransitionsManager<{duration?: number}>({ 
-  options: {
-    duration: 1
-  } 
-})
-```
-
-### useTransitionsManager
-
-Instead of handle the transitionsManager play state with `usePlayIn`
+Instead of handle the transitionsManager playState with `usePlayIn`
 and `usePlayOut` hooks, you can use the `useTransitionsManager` hook in your
 component.
 
-This one returns the current play state of the transitionsManager instance when
+This one returns the current playState of the transitionsManager instance when
 it changes. In this case, you have to execute the `playInComplete`
 and `playOutComplete` functions when the transition is done.
 
 ```tsx
-useTransitionsManager(headerTransitionsManager, async (playState, options) => {
+useTransitionsManager(componentTransitionsManager, async (playState, options) => {
   if (playState === "play-in") {
     await myPlayIn()
-    headerTransitionsManager.playInComplete()
+    componentTransitionsManager.playInComplete()
   }
   if (playState === "play-out") {
     await myPlayOut()
-    headerTransitionsManager.playOutComplete()
+    componentTransitionsManager.playOutComplete()
   }
 })
 
 // or get state from useTransitionsManager hook
-const {playState, options} = useTransitionsManager(headerTransitionsManager)
+const {playState, options} = useTransitionsManager(componentTransitionsManager)
 // ...
 ```
 
-### Mount and unmount manually (old API)
+### <a name="MountUnumountManually"></a>Mount and unmount manually (old API)
 
 If `TransitionsHoc` wrapper is not used, the mount and unmount component state
 can be managed manually. By using `useIsMount` hook from the parent component,
@@ -140,8 +222,8 @@ you can check the mount and unmount boolean state to condition the rendering.
 
 ```tsx
 const App = () => {
-  const mountHeader = useIsMount(headerTransitionsManager)
-  return <div>{mountHeader && <Header/>}</div>
+  const mountComponent = useIsMount(componentTransitionsManager)
+  return <div>{mountComponent && <Component/>}</div>
 }
 ```
 
@@ -151,26 +233,26 @@ Now, you can mount and unmount the component.
 will call `unmount` methods after is execution automatically.
 
 ```ts
-await headerTransitionsManager.playIn() // auto mount + playIn
+await componentTransitionsManager.playIn() // auto mount + playIn
 // ...
-await headerTransitionsManager.playOut() // playOut + auto unmount
+await componentTransitionsManager.playOut() // playOut + auto unmount
 ```
 
 If the `autoMountUnmount` option is disable, you will have to mount and unmount
 manually the component as below:
 
 ```ts
-await headerTransitionsManager.mount()
-await headerTransitionsManager.playIn()
+await componentTransitionsManager.mount()
+await componentTransitionsManager.playIn()
 // ...
-await headerTransitionsManager.playOut()
-await headerTransitionsManager.unmount()
+await componentTransitionsManager.playOut()
+await componentTransitionsManager.unmount()
 ```
 
-## debugging
+## <a name="Debug"></a>Debug
 
 [@wbe/debug](https://github.com/willybrauner/debug) is used on this project. It
-allows to easily get logs informations on development and production modes.
+allows to easily get logs information on development and production modes.
 
 - To use it, add this line in your browser console:
 
@@ -182,10 +264,18 @@ localStorage.debug = "TransitionsManager:*"
   namespace.
 
 ```ts
-const headerTransitionsManager = new TransitionsManager({name: "Header"})
+const componentTransitionsManager = new TransitionsManager({name: "Component"})
 ```
 
-## API usage
+## <a name="Api"></a>API
+
+### TransitionsManager constructor
+
+`{ name?: string, autoMountUnmount?: boolean, options?: Record<any, any> }`
+- `name` (optional) used by debug as namespace
+- `autoMountUnmount` (optional) playIn will auto mount, playOut will auto unmount - default is true
+- `options` (optional) list of default playIn and playOut options
+
 
 ### Mount
 
@@ -211,7 +301,7 @@ const headerTransitionsManager = new TransitionsManager({name: "Header"})
 
 `playOutComplete(): void`
 
-## Utils
+## <a name="Utils"></a>Utils
 
 **`stagger(delay: number = 1, anims: (()=> any)[]): [promise: () => Promise<any>, cancel: () => void]`**
 
@@ -222,7 +312,7 @@ Staggered transition can be setted with the util `stagger` function.
 import {stagger} from "@cher-ami/transitions-manager"
 
 const [start, clear] = stagger(0.1, [
-  headerTransitionsManager.playIn,
+  componentTransitionsManager.playIn,
   FooterTransitionsManager.playIn,
 ])
 
@@ -237,7 +327,7 @@ clear()
   <img src="/screen-stagger.gif"/>
 </p>
 
-## Example
+## <a name="Example">Example
 
 ```shell
 npm i
