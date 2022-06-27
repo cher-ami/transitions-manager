@@ -48,7 +48,7 @@ The life cycle of a single transition order could be:
 - `hidden` (playState) - default
 - `unmount` (mountState) - default
 
-It's possible to managing a transitions without using the mountState and only working with playState. The mountState is useful specificaly about the React usage.
+It's possible to manage a transitions without using the mountState and only working with playState. The mountState is useful specificaly about the React usage.
 
 ## <a name="VanillaUsage"></a>Vanilla usage
 
