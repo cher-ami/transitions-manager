@@ -1,7 +1,8 @@
 import {useLayoutEffect, useState} from "react"
 import { TransitionsManager, TMountState, TPlayState } from "./TransitionsManager"
-import {isServer} from "@cher-ami/utils"
 import React from "react"
+
+const isServer = typeof window === "undefined"
 
 /**
  * useIsMount
@@ -44,7 +45,7 @@ export const useTransitionsManager = <GOptions = {}>(
   const [playState, setPlayState] = useState<TPlayState>(manager.playStateSignal.state)
   const [options, setOptions] = useState<GOptions>(manager.playStateSignal.options)
 
-  
+
   React[isServer ? "useEffect" : "useLayoutEffect"](() => {
     const handler = (p: TPlayState, o: GOptions): void => {
       setPlayState(p)
@@ -66,7 +67,7 @@ export const usePlayIn = <GOptions = {}>(
   callback: (done: () => void, options: GOptions) => void,
   deps: any[] = []
 ): void => {
-  
+
   React[isServer ? "useEffect" : "useLayoutEffect"](() => {
     const handler = (p: TPlayState, options: GOptions): void => {
       if (p !== "play-in") return
@@ -85,7 +86,7 @@ export const usePlayOut = <GOptions = {}>(
   callback: (done: () => void, options:GOptions) => void,
   deps: any[] = []
 ): void => {
-  
+
   React[isServer ? "useEffect" : "useLayoutEffect"](() => {
     const handler = (p: TPlayState, options: GOptions): void => {
       if (p !== "play-out") return
