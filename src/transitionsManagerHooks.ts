@@ -1,5 +1,7 @@
 import {useLayoutEffect, useState} from "react"
 import { TransitionsManager, TMountState, TPlayState } from "./TransitionsManager"
+import {isServer} from "@cher-ami/utils"
+import React from "react"
 
 /**
  * useIsMount
@@ -9,7 +11,7 @@ import { TransitionsManager, TMountState, TPlayState } from "./TransitionsManage
 export const useIsMount = (manager: TransitionsManager, deps: any[] = []): boolean => {
   const [mount, setMount] = useState<boolean>(false)
 
-  useLayoutEffect(() => {
+  React[isServer ? "useEffect" : "useLayoutEffect"](() => {
     const handler = (event: TMountState): void => {
       if (event === "mount") {
         setMount(true)
@@ -42,7 +44,8 @@ export const useTransitionsManager = <GOptions = {}>(
   const [playState, setPlayState] = useState<TPlayState>(manager.playStateSignal.state)
   const [options, setOptions] = useState<GOptions>(manager.playStateSignal.options)
 
-  useLayoutEffect(() => {
+  
+  React[isServer ? "useEffect" : "useLayoutEffect"](() => {
     const handler = (p: TPlayState, o: GOptions): void => {
       setPlayState(p)
       setOptions(o)
@@ -63,12 +66,13 @@ export const usePlayIn = <GOptions = {}>(
   callback: (done: () => void, options: GOptions) => void,
   deps: any[] = []
 ): void => {
-  useLayoutEffect(() => {
+  
+  React[isServer ? "useEffect" : "useLayoutEffect"](() => {
     const handler = (p: TPlayState, options: GOptions): void => {
       if (p !== "play-in") return
       callback(manager.playInComplete, options)
     }
-    return manager.playStateSignal.on(handler)
+    return manager.playStateSignal.on(handler) as any
   }, deps)
 }
 
@@ -81,7 +85,8 @@ export const usePlayOut = <GOptions = {}>(
   callback: (done: () => void, options:GOptions) => void,
   deps: any[] = []
 ): void => {
-  useLayoutEffect(() => {
+  
+  React[isServer ? "useEffect" : "useLayoutEffect"](() => {
     const handler = (p: TPlayState, options: GOptions): void => {
       if (p !== "play-out") return
       callback(manager.playOutComplete, options)
