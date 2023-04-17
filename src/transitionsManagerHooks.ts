@@ -5,7 +5,8 @@ import {
 } from "./TransitionsManager";
 import { useState } from "react";
 import { useIsomorphicLayoutEffect } from "./helpers/useIsomorphicLayoutEffect";
-
+import debug from "@wbe/debug";
+const log = debug("tm:hooks");
 /**
  * useIsMount
  * @param manager
@@ -29,6 +30,13 @@ export const useIsMount = (
       }
     };
     return manager.mountStateSignal.on(handler);
+    // return () => {
+    //   log("unmount");
+    //   manager.mountStateSignal.off(handler);
+    //   setMount(false);
+    //   manager.mountStateSignal.dispatch("unmount");
+    //   manager.unmountComplete();
+    // };
   }, deps);
 
   return mount;
@@ -60,7 +68,9 @@ export const useTransitionsManager = <GOptions = {}>(
       setOptions(o);
       callback(p, o);
     };
+
     return manager.playStateSignal.on(handler);
+
   }, deps);
 
   return { playState, options };

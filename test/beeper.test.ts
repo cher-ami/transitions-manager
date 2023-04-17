@@ -1,4 +1,4 @@
-import {beeper} from "../src/helpers/beeper"
+import {Beeper} from "../src/helpers/Beeper"
 const { log } = console
 
 
@@ -8,12 +8,12 @@ describe("beeper", ()=>
 
 
   it("should return initial state", () => {
-    const bee = beeper<string>("hello")
+    const bee = Beeper<string>("hello")
     expect(bee.state).toBe("hello")
   })
 
   it("should 'on' & 'off' properly", () => {
-    const bee = beeper<string>('initial')
+    const bee = Beeper<string>('initial')
     let response
     const handler = (state:string) => {
       response = state
@@ -30,7 +30,7 @@ describe("beeper", ()=>
 
   it('should register and unregister.handlers properly', () =>
   {
-      const bee = beeper()
+      const bee = Beeper()
       const handler1 = () => {}
       bee.on(handler1)
       const handler2 = () => {}
@@ -44,14 +44,14 @@ describe("beeper", ()=>
 
   it('should return the current state', () =>
   {
-    const bee = beeper<number>(10)
+    const bee = Beeper<number>(10)
     expect(bee.state).toBe(10)
     bee.dispatch(20)
     expect(bee.state).toBe(20)
   })
 
   it("should clear handlers when 'reset' method is executed", ()=> {
-      const bee = beeper()
+      const bee = Beeper()
       bee.on(() => {})
       bee.on(() => {})
       expect(bee.handlers.length).toBe(2)
@@ -62,7 +62,7 @@ describe("beeper", ()=>
 
   it("'on' should return 'off' method", ()=>
   {
-      const bee = beeper()
+      const bee = Beeper()
       let response = bee.state
       const handler = (state:string) => response = state
       const off = bee.on(handler)
@@ -74,18 +74,18 @@ describe("beeper", ()=>
   })
 
   it("should return default options", ()=> {
-    const bee = beeper()
+    const bee = Beeper()
     expect(bee.options).toStrictEqual({})
 
     const opt = {duration: 0}
-    const bee2 = beeper<string, {duration?: number}>("state", opt)
+    const bee2 = Beeper<string, {duration?: number}>("state", opt)
     expect(bee2.options).toStrictEqual(opt)
 
   })
 
   it("should dispatch options", ()=>
   {
-    const bee = beeper<string, {duration?: number, ease?: string}>()
+    const bee = Beeper<string, {duration?: number, ease?: string}>()
 
     let listenOptions
     bee.on((state, options)=> {
@@ -109,7 +109,7 @@ describe("beeper", ()=>
 
   it("should restore initial state and options when 'reset' method is executed", () => {
 
-    const bee = beeper<string, {duration?: number}>("first", {duration: 1})
+    const bee = Beeper<string, {duration?: number}>("first", {duration: 1})
 
     let listenState
     let listenOptions

@@ -1,5 +1,10 @@
-import {TransitionsManager} from "@cher-ami/transitions-manager"
+import { TransitionsManager } from "@cher-ami/transitions-manager";
 
-export const ButtonTransitionsManager = new TransitionsManager<{
+interface Options {
   duration?: number;
-}>();
+}
+
+export const ButtonTransitionsManager = new TransitionsManager<Options>({
+  autoMountUnmount: true,
+  name: "Button",
+});

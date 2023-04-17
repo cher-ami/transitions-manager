@@ -39,6 +39,7 @@
     "react-dom": ">=16.9.0"
   },
   "devDependencies": {
+    "@types/node": "^18.15.11",
     "@babel/preset-env": "^7.21.4",
     "@babel/preset-react": "^7.18.6",
     "@babel/preset-typescript": "^7.21.4",
@@ -46,7 +47,6 @@
     "@testing-library/react-hooks": "^8.0.1",
     "@testing-library/user-event": "^14.4.3",
     "@types/jest": "^29.5.0",
-    "@types/node": "^18.15.11",
     "@types/react": "^18.0.35",
     "@types/react-dom": "^18.0.11",
     "babel-jest": "^29.5.0",
