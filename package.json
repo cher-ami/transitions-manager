@@ -26,8 +26,8 @@
     "build:watch": "vite build --watch",
     "pre-publish": "npm run build && npm run test",
     "clean": "rm -rf dist",
-    "test": "jest",
-    "test:watch": "jest --watchAll",
+    "test": "vitest",
+    "test:watch": "vitest --watch",
     "dev:basic": "pnpm --filter ./examples/basic run dev",
     "dev:with-router": "pnpm --filter ./examples/with-router run dev"
   },
