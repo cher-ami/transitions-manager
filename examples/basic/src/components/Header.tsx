@@ -1,12 +1,21 @@
 import React, { useLayoutEffect, useRef} from "react"
-import {TransitionsManager, usePlayIn, usePlayOut} from "../src"
-import {TransitionsHoc} from "../src"
+import {TransitionsManager, usePlayIn, usePlayOut,TransitionsHoc} from "@cher-ami/transitions-manager"
 import { gsap } from "gsap"
 
 const name = "TestHeader"
 import debug from "@wbe/debug"
 const log = debug(`front:${name}`)
 
+/**
+ *
+ */
+export const headerTransitionsManager = new TransitionsManager<{duration?: number}>()
+
+/**
+ *
+ * @param props
+ * @constructor
+ */
 function Header(props: {className?: string}):JSX.Element {
   const $root = useRef(null)
 
@@ -14,7 +23,6 @@ function Header(props: {className?: string}):JSX.Element {
 
   const tl = useRef<gsap.core.Timeline>()
 
-  // prettier-ignore
   const initTl = (): gsap.core.Timeline =>
     gsap.timeline({ paused: true }).fromTo(
       $root.current,
@@ -28,16 +36,11 @@ function Header(props: {className?: string}):JSX.Element {
 
   // --------------------------––--------------------------–– VIEW MANAGER
 
-  /**
-   * Solution 1
-   */
-
   usePlayIn(headerTransitionsManager, async (done, options) => {
     log('playin options',options)
     await tl.current?.play()
     done()
   })
-
   usePlayOut(headerTransitionsManager, async (done, options) => {
     log('playout options',options)
     await tl.current?.reverse()
@@ -52,7 +55,5 @@ function Header(props: {className?: string}):JSX.Element {
     </header>
   )
 }
-
-export const headerTransitionsManager = new TransitionsManager<{duration?: number}>()
 
 export default TransitionsHoc(Header, headerTransitionsManager)
