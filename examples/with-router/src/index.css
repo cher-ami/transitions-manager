@@ -1,0 +1,37 @@
+body {
+    background-color: rgb(37, 37, 37);
+    color: white;
+    font-family: sans-serif;
+}
+
+.App {
+   margin-top: 80px;
+    text-align: center;
+}
+
+.Stack {
+    margin-top: 2rem;
+}
+
+a {
+    color: pink;
+    display: block;
+}
+
+button {
+    background: none;
+    border: 1px solid white;
+    color: white;
+    margin: 10px;
+    font-size: 15px;
+    outline-style:  none;
+}
+button:active {
+    background-color: white;
+    color: black;
+}
+
+.TestComponent {
+    margin: 10px;
+    font-size: 20px;
+}

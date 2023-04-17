@@ -2,7 +2,8 @@
   "buildCommand": "build",
   "packages": ["./"],
   "sandboxes": [
-    "/examples/basic"
+    "/examples/basic",
+    "/examples/with-router"
   ],
   "node": "16"
 }
