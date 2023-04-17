@@ -1,7 +1,6 @@
-import {useIsMount} from "./transitionsManagerHooks"
-import {TransitionsManager} from "./TransitionsManager"
-import React from "react"
-
+import { useIsMount } from "./transitionsManagerHooks";
+import { TransitionsManager } from "./TransitionsManager";
+import React from "react";
 
 /**
  * Transitions Hoc
@@ -12,15 +11,15 @@ import React from "react"
  * @constructor
  */
 export const TransitionsHoc =
-  (Component: React.FunctionComponent, manager: TransitionsManager) => (props): JSX.Element =>
-{
-  if (!manager || !(manager instanceof TransitionsManager)) {
-    console.error("transitionsManager instance is not found, return.")
-    return
-  }
-  const C = React.createElement(Component, props);
+  (Component: React.FunctionComponent, manager: TransitionsManager) =>
+  (props): JSX.Element => {
+    if (!manager || !(manager instanceof TransitionsManager)) {
+      console.error("transitionsManager instance is not found, return.");
+      return;
+    }
+    const C = React.createElement(Component, props);
 
-  if (!manager.autoMountUnmount) return C;
+    if (!manager.autoMountUnmount) return C;
 
-  return useIsMount(manager) ? C : null
-}
+    return useIsMount(manager as TransitionsManager) ? C : null;
+  };

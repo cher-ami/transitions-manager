@@ -1,33 +1,46 @@
-import {useLayoutEffect, useState} from "react"
-import { TransitionsManager, TMountState, TPlayState } from "./TransitionsManager"
-import React from "react"
-
-const isServer = typeof window === "undefined"
-
+import {
+  TransitionsManager,
+  TMountState,
+  TPlayState,
+} from "./TransitionsManager";
+import { useState } from "react";
+import { useIsomorphicLayoutEffect } from "./helpers/useIsomorphicLayoutEffect";
+import debug from "@wbe/debug";
+const log = debug("tm:hooks");
 /**
  * useIsMount
  * @param manager
  * @param deps
  */
-export const useIsMount = (manager: TransitionsManager, deps: any[] = []): boolean => {
-  const [mount, setMount] = useState<boolean>(false)
+export const useIsMount = (
+  manager: TransitionsManager,
+  deps: any[] = []
+): boolean => {
+  const [mount, setMount] = useState<boolean>(false);
 
-  React[isServer ? "useEffect" : "useLayoutEffect"](() => {
+  useIsomorphicLayoutEffect(() => {
     const handler = (event: TMountState): void => {
       if (event === "mount") {
-        setMount(true)
-        manager.mountComplete()
+        setMount(true);
+        manager.mountComplete();
       }
       if (event === "unmount") {
-        setMount(false)
-        manager.unmountComplete()
+        setMount(false);
+        manager.unmountComplete();
       }
-    }
-    return manager.mountStateSignal.on(handler)
-  }, deps)
+    };
+    return manager.mountStateSignal.on(handler);
+    // return () => {
+    //   log("unmount");
+    //   manager.mountStateSignal.off(handler);
+    //   setMount(false);
+    //   manager.mountStateSignal.dispatch("unmount");
+    //   manager.unmountComplete();
+    // };
+  }, deps);
 
-  return mount
-}
+  return mount;
+};
 
 /**
  * useTransitionsManager
@@ -41,22 +54,27 @@ export const useTransitionsManager = <GOptions = {}>(
   manager: TransitionsManager,
   callback: (playState: TPlayState, options: GOptions) => void,
   deps: any[] = []
-): { playState: TPlayState, options: GOptions } => {
-  const [playState, setPlayState] = useState<TPlayState>(manager.playStateSignal.state)
-  const [options, setOptions] = useState<GOptions>(manager.playStateSignal.options)
+): { playState: TPlayState; options: GOptions } => {
+  const [playState, setPlayState] = useState<TPlayState>(
+    manager.playStateSignal.state
+  );
+  const [options, setOptions] = useState<GOptions>(
+    manager.playStateSignal.options
+  );
 
-
-  React[isServer ? "useEffect" : "useLayoutEffect"](() => {
+  useIsomorphicLayoutEffect(() => {
     const handler = (p: TPlayState, o: GOptions): void => {
-      setPlayState(p)
-      setOptions(o)
-      callback(p, o)
-    }
-    return manager.playStateSignal.on(handler)
-  }, deps)
+      setPlayState(p);
+      setOptions(o);
+      callback(p, o);
+    };
 
-  return {playState, options}
-}
+    return manager.playStateSignal.on(handler);
+
+  }, deps);
+
+  return { playState, options };
+};
 
 /**
  * usePlayIn
@@ -67,15 +85,14 @@ export const usePlayIn = <GOptions = {}>(
   callback: (done: () => void, options: GOptions) => void,
   deps: any[] = []
 ): void => {
-
-  React[isServer ? "useEffect" : "useLayoutEffect"](() => {
+  useIsomorphicLayoutEffect(() => {
     const handler = (p: TPlayState, options: GOptions): void => {
-      if (p !== "play-in") return
-      callback(manager.playInComplete, options)
-    }
-    return manager.playStateSignal.on(handler) as any
-  }, deps)
-}
+      if (p !== "play-in") return;
+      callback(manager.playInComplete, options);
+    };
+    return manager.playStateSignal.on(handler) as any;
+  }, deps);
+};
 
 /**
  * usePlayOut
@@ -83,15 +100,14 @@ export const usePlayIn = <GOptions = {}>(
  */
 export const usePlayOut = <GOptions = {}>(
   manager: TransitionsManager<GOptions>,
-  callback: (done: () => void, options:GOptions) => void,
+  callback: (done: () => void, options: GOptions) => void,
   deps: any[] = []
 ): void => {
-
-  React[isServer ? "useEffect" : "useLayoutEffect"](() => {
+  useIsomorphicLayoutEffect(() => {
     const handler = (p: TPlayState, options: GOptions): void => {
-      if (p !== "play-out") return
-      callback(manager.playOutComplete, options)
-    }
-    return manager.playStateSignal.on(handler)
-  }, deps)
-}
+      if (p !== "play-out") return;
+      callback(manager.playOutComplete, options);
+    };
+    return manager.playStateSignal.on(handler);
+  }, deps);
+};

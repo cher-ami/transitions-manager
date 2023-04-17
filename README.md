@@ -339,6 +339,19 @@ Start dev server for specific example
 pnpm run dev:basic
 ```
 
+
+Start build:watch on the lib witch is symlinked to the example
+```shell
+pnpm run build:watch
+```
+
+Start unit tests watch during development
+
+```shell  
+pnpm run test:watch
+```
+
+
 ## Licence
 
 [MIT](./LICENSE)
