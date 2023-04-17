@@ -12,9 +12,22 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - name: install
-        run: npm ci --legacy-peer-deps
+
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 7
+
+      - name: Install dependencies
+        run: pnpm install
+
       - name: build
-        run: npm run compile
+        run: pnpm run build
+
       - name: test
-        run: npm run test
+        run: pnpm run test

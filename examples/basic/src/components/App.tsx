@@ -1,5 +1,4 @@
 import React from "react"
-// @ts-ignore
 import Header, {headerTransitionsManager} from "./Header"
 
 const App = () => {
@@ -16,7 +15,7 @@ const App = () => {
     <div className="App">
       <button onClick={clickPlayIn}>play-in</button>
       <button onClick={clickPlayOut}>play-out</button>
-      <Header className={"hello"} />
+      <Header />
     </div>
   )
 }
