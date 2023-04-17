@@ -58,13 +58,6 @@ function Button(props: { className?: string }): JSX.Element {
     }
   });
 
-  // force unmount
-  useEffect(() => {
-    return () => {
-//      ButtonTransitionsManager.mountStateSignal.dispatch("unmount");
-    };
-  }, []);
-
   // --------------------------––--------------------------–– RENDER
 
   return (

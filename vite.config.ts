@@ -1,7 +1,7 @@
 /// <reference types="vitest" />
-import { defineConfig } from "vite"
-import dts from "vite-plugin-dts"
-import { resolve } from "path"
+import { defineConfig } from "vite";
+import dts from "vite-plugin-dts";
+import { resolve } from "path";
 
 export default defineConfig({
   resolve: {
@@ -20,7 +20,7 @@ export default defineConfig({
       fileName: "index",
     },
     rollupOptions: {
-      external: ['react', 'react-dom'],
+      external: ["react", "react-dom"],
       // output: {
       //   // Provide global variables to use in the UMD build
       //   // for externalized deps
@@ -28,7 +28,7 @@ export default defineConfig({
       //     react: 'React',
       //   },
       // },
-    }
+    },
   },
 
   plugins: [
@@ -39,4 +39,8 @@ export default defineConfig({
       insertTypesEntry: true,
     }),
   ],
-})
+
+  test: {
+    environment: "jsdom",
+  },
+});
