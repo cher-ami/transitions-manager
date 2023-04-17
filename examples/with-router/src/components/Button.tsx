@@ -5,9 +5,11 @@ import {
   TransitionsHoc,
 } from "@cher-ami/transitions-manager";
 import { gsap } from "gsap";
-const name = "TestHeader";
 import debug from "@wbe/debug";
 import { ButtonTransitionsManager } from "./ButtonTransitionsManager";
+
+
+const name = "Button";
 const log = debug(`front:${name}`);
 
 /**
