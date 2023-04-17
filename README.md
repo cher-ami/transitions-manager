@@ -330,13 +330,13 @@ clear()
 ## <a name="Example">Example
 
 ```shell
-npm i
+pnpm i
 ```
 
-Start dev server
+Start dev server for specific example
 
 ```shell
-npm run dev
+pnpm run dev:basic
 ```
 
 ## Licence
