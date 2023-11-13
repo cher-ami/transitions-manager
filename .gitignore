@@ -6,3 +6,4 @@ tsconfig-build.tsbuildinfo
 out*
 .husky
 .DS_Store
+.turbo

@@ -1,9 +1,9 @@
 import React, { useLayoutEffect, useRef} from "react"
-import {TransitionsManager, usePlayIn, usePlayOut,TransitionsHoc} from "@cher-ami/transitions-manager"
+import { TransitionsManager, usePlayIn, usePlayOut, TransitionsHoc } from "@cher-ami/transitions-manager"
 import { gsap } from "gsap"
 
-const name = "TestHeader"
-import debug from "@wbe/debug"
+const name = "Header"
+import debug from "@cher-ami/debug"
 const log = debug(`front:${name}`)
 
 /**

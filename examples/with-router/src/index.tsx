@@ -12,11 +12,11 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     routes={[
       {
         path: "/",
-        component: Home as any,
+        component: Home,
       },
       {
         path: "/second",
-        component: Second as any,
+        component: Second,
       },
     ]}
     base={"/"}

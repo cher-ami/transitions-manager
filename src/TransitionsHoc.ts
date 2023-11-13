@@ -12,7 +12,7 @@ import React from "react";
  */
 export const TransitionsHoc =
   (Component: React.FunctionComponent, manager: TransitionsManager) =>
-  (props): JSX.Element => {
+  (props) => {
     if (!manager || !(manager instanceof TransitionsManager)) {
       console.error("transitionsManager instance is not found, return.");
       return;

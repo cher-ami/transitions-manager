@@ -2,19 +2,20 @@
   "compilerOptions": {
     "outDir": "./dist",
     "rootDir": "./src",
-    "module": "esnext",
     "target": "esnext",
-    "lib": ["dom", "esnext"],
-    "moduleResolution": "node",
-    "types": ["vite" ,"node"],
+    "module": "esnext",
+    "lib": ["es2015.promise", "es6", "dom", "esnext"],
     "jsx": "react",
-    "composite": false,
+    "moduleResolution": "node",
     "declaration": true,
+    "isolatedModules": false,
     "noImplicitAny": false,
     "esModuleInterop": true,
     "preserveConstEnums": true,
-    "strictNullChecks": false
+    "strictNullChecks": false,
+    "types": ["node","vitest/globals", "@testing-library/jest-dom"]
+
   },
-  "include": ["./src/**/*"],
+  "include": ["./src/**/*", "./test/**/*"],
   "exclude": ["node_modules", "dist", "test"]
 }

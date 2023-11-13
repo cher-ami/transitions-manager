@@ -1,7 +1,9 @@
 import * as React from "react";
 import { vi, beforeEach, expect, describe, it } from "vitest";
 import { act, render } from "@testing-library/react";
-import matchers from "@testing-library/jest-dom/matchers";
+
+// @ts-ignore
+import matchers from '@testing-library/jest-dom/matchers';
 
 import {
   TransitionsHoc,

@@ -251,7 +251,7 @@ await componentTransitionsManager.unmount()
 
 ## <a name="Debug"></a>Debug
 
-[@wbe/debug](https://github.com/willybrauner/debug) is used on this project. It
+[@cher-ami/debug](https://github.com/willybrauner/debug) is used on this project. It
 allows to easily get logs information on development and production modes.
 
 - To use it, add this line in your browser console:
@@ -333,10 +333,10 @@ clear()
 pnpm i
 ```
 
-Start dev server for specific example
+Start dev server for all examples
 
 ```shell
-pnpm run dev:basic
+pnpm run dev
 ```
 
 

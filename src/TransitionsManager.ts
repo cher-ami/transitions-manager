@@ -1,4 +1,4 @@
-import debug from "@wbe/debug";
+import debug from "@cher-ami/debug";
 import { deferredPromise, TDeferredPromise } from "./helpers/deferredPromise";
 import { Beeper } from "./helpers/Beeper";
 
