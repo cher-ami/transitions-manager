@@ -333,10 +333,10 @@ clear()
 pnpm i
 ```
 
-Start dev server for specific example
+Start dev server for all examples
 
 ```shell
-pnpm run dev:basic
+pnpm run dev
 ```
 
 

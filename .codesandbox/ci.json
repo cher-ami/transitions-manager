@@ -5,5 +5,5 @@
     "/examples/basic",
     "/examples/with-router"
   ],
-  "node": "16"
+  "node": "18"
 }
