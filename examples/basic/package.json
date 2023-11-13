@@ -1,27 +1,23 @@
 {
   "name": "basic",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "author": "",
-  "license": "ISC",
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "serve": "vite preview"
   },
   "dependencies": {
-    "@cher-ami/transitions-manager": "latest",
-    "@wbe/debug": "^1.1.0",
-    "gsap": "^3.11.5",
+    "@cher-ami/debug": "^1.2.0",
+    "@cher-ami/transitions-manager": "^0.5.1",
+    "gsap": "^3.12.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@types/react": "^18.0.35",
-    "@types/react-dom": "^18.0.11",
-    "@vitejs/plugin-react": "^3.1.0",
-    "typescript": "^5.0.4",
-    "vite": "^4.2.1"
+    "@types/react": "^18.2.37",
+    "@types/react-dom": "^18.2.15",
+    "@vitejs/plugin-react": "^4.1.1",
+    "typescript": "^5.2.2",
+    "vite": "^4.5.0"
   }
 }

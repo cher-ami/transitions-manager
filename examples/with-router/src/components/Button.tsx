@@ -6,7 +6,7 @@ import {
   useTransitionsManager,
 } from "@cher-ami/transitions-manager";
 import { gsap } from "gsap";
-import debug from "@wbe/debug";
+import debug from "@cher-ami/debug";
 import { ButtonTransitionsManager } from "./ButtonTransitionsManager";
 
 const name = "Button";
